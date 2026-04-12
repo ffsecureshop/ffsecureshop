@@ -147,11 +147,14 @@
       <label for="telephone">Téléphone</label>
       <input type="text" id="telephone" name="Téléphone" placeholder="Numéro utilisé pour paiement" required>
 
+      <label for="quantite">Quantité</label>
+      <input type="number" id="quantite" name="Quantité" min="1" value="1" required>
+
       <label for="mode">Mode de preuve</label>
       <select id="mode" name="Mode de preuve" required>
         <option value="">Choisir</option>
         <option value="Référence">Référence</option>
-        <option value="Capture envoyée par message">Capture envoyée par message</option>
+        <option value="Image envoyée par message">Image envoyée par message</option>
       </select>
 
       <label for="reference">Référence de transaction</label>
