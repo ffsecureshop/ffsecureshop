@@ -57,6 +57,21 @@
       <h3 class="title">Commander vos diamants 💎</h3>
       <p class="subtitle">Remplissez les informations pour finaliser votre commande.</p>
 
+      <div class="row g-2 mb-3">
+        <div class="col-12 col-md-6">
+          <div class="alert alert-warning mb-0 text-center">
+            <strong>Orange Money</strong><br>
+            0374003205
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="alert alert-info mb-0 text-center">
+            <strong>Mvola</strong><br>
+            0380621851
+          </div>
+        </div>
+      </div>
+
       <div class="pack-box" id="pack_box">
         Pack choisi : <span id="pack_display"></span>
       </div>
@@ -95,13 +110,13 @@
         </div>
 
         <div class="mb-3">
-          <label for="telephone" class="form-label">Téléphone</label>
+          <label for="telephone" class="form-label">Numéro utilisé pour le paiement</label>
           <input
             type="tel"
             class="form-control"
             id="telephone"
-            name="Telephone"
-            placeholder="+261 34 12 345 67"
+            name="Numero_utilise_pour_le_paiement"
+            placeholder="Votre numéro de transfert"
             pattern="[0-9+()\-\s]{6,}"
             required
           />
@@ -254,4 +269,4 @@
     })();
   </script>
 </body>
-  </html>
+</html>
