@@ -1,37 +1,96 @@
 
-<div class="commande-box">
-  <h2>Commander vos diamants 💎</h2>
+<body>
+  <div class="commande-box">
+    <h2>Commander vos diamants 💎</h2>
 
-  <form action="https://usebasin.com/f/974414d6abc4" method="POST" enctype="multipart/form-data">
-    <label for="uid">UID</label>
-    <input type="text" id="uid" name="uid">
+    <p class="commande-subtitle">
+      Remplissez les informations pour finaliser votre commande.
+    </p>
 
-    <label for="pseudo">Pseudo</label>
-    <input type="text" id="pseudo" name="pseudo">
+    <div class="pack-selected-box">
+      <strong>Pack choisi :</strong> <span id="packName">Chargement...</span>
+    </div>
 
-    <label for="telephone">Téléphone</label>
-    <input type="tel" id="telephone" name="telephone">
+    <form action="https://usebasin.com/f/974414d6abc4" method="POST" enctype="multipart/form-data" class="commande-form">
+      <input type="hidden" id="hiddenPack" name="pack_choisi">
 
-    <label for="quantity">Quantité</label>
-    <input type="number" id="quantity" name="quantity">
+      <label for="uid">UID</label>
+      <input type="text" id="uid" name="uid" placeholder="Votre UID" required>
 
-    <label for="payment_proof_method">Mode de preuve</label>
-    <select id="payment_proof_method" name="payment_proof_method">
-      <option value="bank_transfer">Bank Transfer</option>
-      <option value="mobile_money">Mobile Money</option>
-      <option value="card">Card</option>
-      <option value="other">Other</option>
-    </select>
+      <label for="pseudo">Pseudo</label>
+      <input type="text" id="pseudo" name="pseudo" placeholder="Votre pseudo" required>
 
-    <label for="transaction_reference">Référence de transaction</label>
-    <input type="text" id="transaction_reference" name="transaction_reference">
+      <label for="telephone">Téléphone</label>
+      <input type="tel" id="telephone" name="telephone" placeholder="Numéro utilisé pour paiement" required>
 
-    <label for="screenshot">Capture d'écran</label>
-    <input type="file" id="screenshot" name="screenshot" accept="image/*">
+      <label for="quantity">Quantité</label>
+      <input type="number" id="quantity" name="quantity" min="1" value="1" required>
 
-    <label for="note">Remarque</label>
-    <textarea id="note" name="note"></textarea>
+      <label for="payment_proof_method">Mode de preuve</label>
+      <select id="payment_proof_method" name="payment_proof_method" required>
+        <option value="">Choisir</option>
+        <option value="reference">Référence</option>
+        <option value="screenshot">Capture d'écran</option>
+      </select>
 
-    <button type="submit">Envoyer la commande</button>
-  </form>
-</div>
+      <div id="reference-box">
+        <label for="transaction_reference">Référence de transaction</label>
+        <input type="text" id="transaction_reference" name="transaction_reference" placeholder="Ex : TRX123456">
+      </div>
+
+      <div id="screenshot-box" style="display:none;">
+        <label for="screenshot">Capture d'écran</label>
+        <input type="file" id="screenshot" name="screenshot" accept="image/*">
+      </div>
+
+      <label for="note">Remarque</label>
+      <textarea id="note" name="note" placeholder="Message ou précision (optionnel)"></textarea>
+
+      <button type="submit">Envoyer la commande</button>
+    </form>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const pack = params.get("pack");
+    const packName = document.getElementById("packName");
+    const hiddenPack = document.getElementById("hiddenPack");
+
+    if (pack) {
+      packName.textContent = pack + " 💎";
+      hiddenPack.value = pack + " 💎";
+    } else {
+      packName.textContent = "Aucun pack";
+      hiddenPack.value = "Aucun pack";
+    }
+
+    const mode = document.getElementById("payment_proof_method");
+    const referenceBox = document.getElementById("reference-box");
+    const screenshotBox = document.getElementById("screenshot-box");
+    const referenceInput = document.getElementById("transaction_reference");
+    const screenshotInput = document.getElementById("screenshot");
+
+    mode.addEventListener("change", function () {
+      if (this.value === "reference") {
+        referenceBox.style.display = "block";
+        screenshotBox.style.display = "none";
+        referenceInput.required = true;
+        screenshotInput.required = false;
+        screenshotInput.value = "";
+      } else if (this.value === "screenshot") {
+        referenceBox.style.display = "none";
+        screenshotBox.style.display = "block";
+        referenceInput.required = false;
+        screenshotInput.required = true;
+        referenceInput.value = "";
+      } else {
+        referenceBox.style.display = "block";
+        screenshotBox.style.display = "none";
+        referenceInput.required = false;
+        screenshotInput.required = false;
+        referenceInput.value = "";
+        screenshotInput.value = "";
+      }
+    });
+  </script>
+</body>
