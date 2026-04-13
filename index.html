@@ -1,99 +1,107 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF Secure Shop</title>
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #6dd5fa, #2980b9);
-    color: #fff;
-  }
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 15px;
-    margin: 10px;
-  }
-  .icon {
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    color: #000;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: 5px;
-    cursor: pointer;
-    font-size: 18px;
-  }
-  .cart {
-    position: relative;
-  }
-  .cart span {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    background: red;
-    color: #fff;
-    font-size: 12px;
-    padding: 2px 5px;
-    border-radius: 50%;
-  }
-  .container {
-    text-align: center;
-    margin: 30px 10px;
-    padding: 20px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 15px;
-  }
-  .button {
-    display: block;
-    margin: 10px auto;
-    padding: 15px;
-    width: 80%;
-    max-width: 300px;
-    background: #66fcf1;
-    color: #000;
-    font-weight: bold;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .button:hover {
-    background: #45a29e;
-  }
-</style>
-</head>
-<body>
+<!-- Barre du haut -->
+<div class="topbar">
+  <!-- Menu -->
+  <button class="icon-btn" onclick="alert('Menu clicqué !')">&#9776;</button>
 
-<div class="header">
-  <div class="icon" onclick="alert('Menu clicqué !')">&#9776;</div>
-  <div class="icon" onclick="alert('Historique clicqué !')">&#128340;</div>
-  <div class="icon" onclick="alert('Profil clicqué !')">&#128100;</div>
-  <div class="icon" onclick="alert('Mode nuit clicqué !')">&#9788;</div>
-  <div class="icon cart" onclick="alert('Panier clicqué !')">
-    &#128722;<span>0</span>
+  <!-- Titre / logo -->
+  <div class="topbar-title">FF Secure Shop</div>
+
+  <!-- Historique -->
+  <button class="icon-btn" onclick="alert('Historique clicqué !')">&#128340;</button>
+
+  <!-- Profil -->
+  <button class="icon-btn" onclick="alert('Profil clicqué !')">&#128100;</button>
+
+  <!-- Mode nuit -->
+  <button class="icon-btn" onclick="toggleDarkMode()">&#9788;</button>
+
+  <!-- Panier -->
+  <div class="cart-badge-wrap">
+    <button class="icon-btn" onclick="openCart()">&#128722;</button>
+    <div class="cart-badge" id="cartCount">0</div>
   </div>
 </div>
 
-<div class="container">
-  <h1>Bienvenue sur FF Secure Shop 💎</h1>
-  <p>Rechargez vos diamants rapidement et en toute sécurité.</p>
-  <p>⚡ Livraison rapide • 💎 Top Up instantané • 🔥 Abonnements disponibles</p>
-  
-  <a href="topup.html" class="button">Top Up</a>
-  <a href="abonnement.html" class="button">Abonnement</a>
-  
-  <p>Paiement : Orange Money • Mvola</p>
-</div>
+<style>
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #6d5bff, #19d6f3);
+  margin: 10px;
+  backdrop-filter: blur(6px);
+}
 
-</body>
-</html>
+.icon-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.15);
+  color: #000;
+  font-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.topbar-title {
+  flex: 1;
+  font-weight: 700;
+  color: white;
+  font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-badge-wrap {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 50%;
+  background: #ff2b7a;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
+<script>
+// Exemple simple : panier stocké dans localStorage
+function getCart() {
+  return JSON.parse(localStorage.getItem('cart')) || [];
+}
+
+function updateCartCount() {
+  const cart = getCart();
+  const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById('cartCount').textContent = totalQty;
+}
+
+// Initialisation du compteur
+updateCartCount();
+
+// Exemple de fonctions clic pour icônes
+function toggleDarkMode() {
+  document.body.classList.toggle('dark-mode');
+  alert('Mode nuit togglé !');
+}
+
+function openCart() {
+  alert('Panier clicqué !');
+}
+</script>
