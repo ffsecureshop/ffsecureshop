@@ -1,107 +1,768 @@
-<!-- Barre du haut -->
-<div class="topbar">
-  <!-- Menu -->
-  <button class="icon-btn" onclick="alert('Menu clicqué !')">&#9776;</button>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FF Secure Shop - Accueil</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  <!-- Titre / logo -->
-  <div class="topbar-title">FF Secure Shop</div>
+    :root {
+      --bg1: #20d8f2;
+      --bg2: #7b5cff;
+      --glass: rgba(255, 255, 255, 0.12);
+      --glass-strong: rgba(255, 255, 255, 0.18);
+      --border: rgba(255, 255, 255, 0.28);
+      --text: #ffffff;
+      --dark-text: #151515;
+      --cyan-btn: #7eeeff;
+      --panel-bg: #eef5f8;
+      --badge: #ff2c7d;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
 
-  <!-- Historique -->
-  <button class="icon-btn" onclick="alert('Historique clicqué !')">&#128340;</button>
+    body.dark {
+      --bg1: #0b1630;
+      --bg2: #37196d;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-strong: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.16);
+      --text: #ffffff;
+      --dark-text: #f2f2f2;
+      --cyan-btn: #8defff;
+      --panel-bg: #161b2b;
+      --badge: #ff2c7d;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
 
-  <!-- Profil -->
-  <button class="icon-btn" onclick="alert('Profil clicqué !')">&#128100;</button>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(160deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+      color: var(--text);
+      padding: 14px;
+    }
 
-  <!-- Mode nuit -->
-  <button class="icon-btn" onclick="toggleDarkMode()">&#9788;</button>
+    .page {
+      max-width: 480px;
+      margin: 0 auto;
+    }
 
-  <!-- Panier -->
-  <div class="cart-badge-wrap">
-    <button class="icon-btn" onclick="openCart()">&#128722;</button>
-    <div class="cart-badge" id="cartCount">0</div>
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06));
+      border: 2px solid var(--border);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      border: 2px solid var(--border);
+      background: var(--glass);
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 21px;
+      color: var(--dark-text);
+      cursor: pointer;
+      transition: 0.2s ease;
+      text-decoration: none;
+    }
+
+    body.dark .icon-btn {
+      color: white;
+    }
+
+    .icon-btn:hover {
+      transform: scale(1.04);
+    }
+
+    .topbar-title {
+      flex: 1;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .cart-wrap {
+      position: relative;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: var(--badge);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid white;
+    }
+
+    .main-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.09));
+      border: 2px solid var(--border);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      padding: 22px 18px 24px;
+      text-align: center;
+    }
+
+    .main-title {
+      margin: 6px 0 14px;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 800;
+      color: white;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.18);
+    }
+
+    .notice-box {
+      margin: 0 auto 18px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.11);
+      border: 2px solid var(--border);
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .notice-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: scrollText 13s linear infinite;
+    }
+
+    @keyframes scrollText {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .desc {
+      margin: 0 0 12px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: white;
+    }
+
+    .benefits {
+      margin: 0 0 20px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: white;
+      font-weight: 700;
+    }
+
+    .main-btn {
+      display: block;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 14px;
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: var(--cyan-btn);
+      border: 2px solid rgba(255,255,255,0.4);
+      color: #111;
+      font-size: 18px;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.13);
+      transition: 0.2s ease;
+    }
+
+    .main-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .pay-text {
+      margin-top: 8px;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .contact-title {
+      margin: 26px 0 14px;
+      color: white;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .social-btn {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: rgba(255,255,255,0.14);
+      color: white;
+      font-size: 28px;
+      text-decoration: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: var(--shadow);
+      transition: 0.2s ease;
+    }
+
+    .social-btn:hover {
+      transform: scale(1.06);
+    }
+
+    .slide-panel {
+      margin-top: 14px;
+      background: var(--panel-bg);
+      color: var(--dark-text);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      display: none;
+    }
+
+    body.dark .slide-panel {
+      color: white;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .slide-panel.active {
+      display: block;
+    }
+
+    .panel-title {
+      font-size: 22px;
+      font-weight: 800;
+      margin: 0 0 14px;
+    }
+
+    .menu-links {
+      display: grid;
+      gap: 12px;
+    }
+
+    .panel-link {
+      display: block;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(0,0,0,0.06);
+      color: inherit;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    body.dark .panel-link {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .history-item,
+    .profile-item,
+    .cart-item {
+      background: rgba(0,0,0,0.05);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    body.dark .history-item,
+    body.dark .profile-item,
+    body.dark .cart-item {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .small-label {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 6px;
+    }
+
+    .strong {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .empty-box {
+      text-align: center;
+      padding: 6px 0 4px;
+    }
+
+    .empty-box p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0 0 14px;
+    }
+
+    .empty-actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .inline-btn {
+      display: block;
+      width: 100%;
+      padding: 15px 16px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #18d4f5, #7b5cff);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .cart-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .remove-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 12px;
+      background: #ff2c7d;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .qty-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .qty-btn {
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 12px;
+      background: #18d4f5;
+      color: #111;
+      font-size: 24px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .qty-value {
+      min-width: 24px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .total-box {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 16px 0;
+    }
+
+    .clear-btn {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 16px;
+      background: #111;
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .form-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 18px 0 14px;
+    }
+
+    .order-form input,
+    .order-form select,
+    .order-form textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 16px;
+      border: 2px solid rgba(0,0,0,0.08);
+      background: rgba(255,255,255,0.8);
+      font-size: 15px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+
+    body.dark .order-form input,
+    body.dark .order-form select,
+    body.dark .order-form textarea {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.08);
+      color: white;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #18d4f5, #7b5cff);
+      color: white;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <button class="icon-btn" onclick="togglePanel('menuPanel')" title="Menu">☰</button>
+      <div class="topbar-title">FF Secure Shop</div>
+      <button class="icon-btn" onclick="togglePanel('historyPanel')" title="Historique">⏰</button>
+      <button class="icon-btn" onclick="togglePanel('profilePanel')" title="Profil">👤</button>
+      <button class="icon-btn" onclick="toggleTheme()" title="Thème">☀</button>
+      <div class="cart-wrap">
+        <button class="icon-btn" onclick="togglePanel('cartPanel')" title="Panier">🛒</button>
+        <div class="cart-badge" id="cartCount">0</div>
+      </div>
+    </div>
+
+    <div class="main-card">
+      <h1 class="main-title">Bienvenue sur FF Secure Shop 💎</h1>
+
+      <div class="notice-box">
+        <div class="notice-text">🔥 Livraison rapide • Commande sécurisée • Top Up et Abonnements disponibles 🔥</div>
+      </div>
+
+      <p class="desc">
+        Rechargez vos diamants rapidement et en toute sécurité.
+      </p>
+
+      <div class="benefits">
+        ⚡ Livraison rapide<br>
+        💎 Top Up instantané<br>
+        🔥 Abonnements disponibles
+      </div>
+
+      <a href="topup.html" class="main-btn">Top Up</a>
+      <a href="abonnement.html" class="main-btn">Abonnement</a>
+
+      <div class="pay-text">Paiement : Orange Money • Mvola</div>
+
+      <div class="contact-title">Contactez-nous</div>
+
+      <div class="socials">
+        <a class="social-btn" href="https://www.facebook.com/ffsecureshop2026" target="_blank" title="Facebook">f</a>
+        <a class="social-btn" href="https://m.me/ffsecureshop2026" target="_blank" title="Messenger">✉</a>
+      </div>
+    </div>
+
+    <div id="menuPanel" class="slide-panel">
+      <div class="panel-title">Menu</div>
+      <div class="menu-links">
+        <a href="index.html" class="panel-link">Accueil</a>
+        <a href="topup.html" class="panel-link">Top Up</a>
+        <a href="abonnement.html" class="panel-link">Abonnement</a>
+      </div>
+    </div>
+
+    <div id="historyPanel" class="slide-panel">
+      <div class="panel-title">Historique</div>
+      <div id="historyList"></div>
+    </div>
+
+    <div id="profilePanel" class="slide-panel">
+      <div class="panel-title">Profil</div>
+      <div class="profile-item">
+        <div class="small-label">Boutique</div>
+        <div class="strong">FF Secure Shop</div>
+      </div>
+      <div class="profile-item">
+        <div class="small-label">Mode de paiement</div>
+        <div class="strong">Orange Money • Mvola</div>
+      </div>
+      <div class="profile-item">
+        <div class="small-label">Pages principales</div>
+        <div class="strong">Accueil • Top Up • Abonnement</div>
+      </div>
+    </div>
+
+    <div id="cartPanel" class="slide-panel">
+      <div class="panel-title">Votre panier</div>
+
+      <div id="emptyCartBox" class="empty-box hidden">
+        <p>Votre panier est vide.<br>Choisissez d’abord un produit.</p>
+        <div class="empty-actions">
+          <a href="topup.html" class="inline-btn">Aller vers Top Up</a>
+          <a href="abonnement.html" class="inline-btn">Aller vers Abonnement</a>
+        </div>
+      </div>
+
+      <div id="filledCartBox" class="hidden">
+        <div id="cartItems"></div>
+
+        <div class="total-box" id="cartTotal">Total : 0 Ar</div>
+
+        <button class="clear-btn" onclick="clearCart()">Vider le panier</button>
+
+        <div class="form-title">Finaliser la commande</div>
+
+        <form
+          class="order-form"
+          action="https://usebasin.com/f/1574fccfda5e"
+          method="POST"
+          onsubmit="prepareOrderBeforeSend()"
+        >
+          <input type="hidden" name="Produits" id="hiddenProducts">
+          <input type="hidden" name="Total" id="hiddenTotal">
+
+          <input type="text" name="UID" placeholder="Votre UID" required>
+          <input type="text" name="Pseudo" placeholder="Votre pseudo" required>
+
+          <select name="Methode de paiement" required>
+            <option value="">Mode de paiement</option>
+            <option value="Orange Money">Orange Money</option>
+            <option value="Mvola">Mvola</option>
+          </select>
+
+          <input type="text" name="Numero de paiement" placeholder="Votre numéro de paiement" required>
+
+          <select name="Mode de preuve" required>
+            <option value="">Mode de preuve</option>
+            <option value="Capture d'écran">Capture d'écran</option>
+            <option value="Référence de transaction">Référence de transaction</option>
+          </select>
+
+          <textarea name="Remarque" placeholder="Remarque ou message (optionnel)"></textarea>
+
+          <button type="submit" class="submit-btn">Envoyer la commande</button>
+        </form>
+      </div>
+    </div>
   </div>
-</div>
 
-<style>
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 24px;
-  background: linear-gradient(135deg, #6d5bff, #19d6f3);
-  margin: 10px;
-  backdrop-filter: blur(6px);
-}
+  <script>
+    const panelIds = ["menuPanel", "historyPanel", "profilePanel", "cartPanel"];
 
-.icon-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 16px;
-  border: 2px solid rgba(255,255,255,0.25);
-  background: rgba(255,255,255,0.15);
-  color: #000;
-  font-size: 22px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
+    function togglePanel(panelId) {
+      panelIds.forEach(id => {
+        const panel = document.getElementById(id);
+        if (id === panelId) {
+          panel.classList.toggle("active");
+        } else {
+          panel.classList.remove("active");
+        }
+      });
 
-.topbar-title {
-  flex: 1;
-  font-weight: 700;
-  color: white;
-  font-size: 18px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+      if (panelId === "historyPanel") {
+        renderHistory();
+      }
 
-.cart-badge-wrap {
-  position: relative;
-}
+      if (panelId === "cartPanel") {
+        renderCart();
+      }
+    }
 
-.cart-badge {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  min-width: 24px;
-  height: 24px;
-  padding: 0 6px;
-  border-radius: 50%;
-  background: #ff2b7a;
-  color: white;
-  font-weight: bold;
-  font-size: 13px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+    function toggleTheme() {
+      document.body.classList.toggle("dark");
+      localStorage.setItem("theme", document.body.classList.contains("dark") ? "dark" : "light");
+    }
 
-<script>
-// Exemple simple : panier stocké dans localStorage
-function getCart() {
-  return JSON.parse(localStorage.getItem('cart')) || [];
-}
+    function loadTheme() {
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+      }
+    }
 
-function updateCartCount() {
-  const cart = getCart();
-  const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-  document.getElementById('cartCount').textContent = totalQty;
-}
+    function getCart() {
+      return JSON.parse(localStorage.getItem("cart")) || [];
+    }
 
-// Initialisation du compteur
-updateCartCount();
+    function saveCart(cart) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+    }
 
-// Exemple de fonctions clic pour icônes
-function toggleDarkMode() {
-  document.body.classList.toggle('dark-mode');
-  alert('Mode nuit togglé !');
-}
+    function formatPrice(price) {
+      return Number(price).toLocaleString("fr-FR") + " Ar";
+    }
 
-function openCart() {
-  alert('Panier clicqué !');
-}
-</script>
+    function updateCartCount() {
+      const cart = getCart();
+      const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById("cartCount").textContent = totalQty;
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const emptyCartBox = document.getElementById("emptyCartBox");
+      const filledCartBox = document.getElementById("filledCartBox");
+      const cartItems = document.getElementById("cartItems");
+      const cartTotal = document.getElementById("cartTotal");
+
+      if (cart.length === 0) {
+        emptyCartBox.classList.remove("hidden");
+        filledCartBox.classList.add("hidden");
+        return;
+      }
+
+      emptyCartBox.classList.add("hidden");
+      filledCartBox.classList.remove("hidden");
+
+      let total = 0;
+      cartItems.innerHTML = "";
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        cartItems.innerHTML += `
+          <div class="cart-item">
+            <div class="cart-row-top">
+              <div class="strong">${item.name}</div>
+              <button type="button" class="remove-btn" onclick="removeItem(${index})">×</button>
+            </div>
+
+            <div class="qty-row">
+              <button type="button" class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+              <div class="qty-value">${item.quantity}</div>
+              <button type="button" class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+              <div class="strong">${formatPrice(itemTotal)}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      cartTotal.textContent = "Total : " + formatPrice(total);
+    }
+
+    function changeQty(index, delta) {
+      const cart = getCart();
+      cart[index].quantity += delta;
+
+      if (cart[index].quantity <= 0) {
+        cart.splice(index, 1);
+      }
+
+      saveCart(cart);
+      renderCart();
+    }
+
+    function removeItem(index) {
+      const cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function clearCart() {
+      localStorage.removeItem("cart");
+      updateCartCount();
+      renderCart();
+    }
+
+    function prepareOrderBeforeSend() {
+      const cart = getCart();
+      let total = 0;
+
+      const productsText = cart.map(item => {
+        const lineTotal = item.price * item.quantity;
+        total += lineTotal;
+        return `${item.name} x${item.quantity} = ${formatPrice(lineTotal)}`;
+      }).join(" | ");
+
+      document.getElementById("hiddenProducts").value = productsText;
+      document.getElementById("hiddenTotal").value = formatPrice(total);
+
+      addHistory(productsText, formatPrice(total));
+    }
+
+    function getHistory() {
+      return JSON.parse(localStorage.getItem("orderHistory")) || [];
+    }
+
+    function addHistory(products, total) {
+      const history = getHistory();
+      const now = new Date();
+
+      history.unshift({
+        products: products,
+        total: total,
+        date: now.toLocaleDateString("fr-FR") + " " + now.toLocaleTimeString("fr-FR", {
+          hour: "2-digit",
+          minute: "2-digit"
+        })
+      });
+
+      localStorage.setItem("orderHistory", JSON.stringify(history.slice(0, 10)));
+    }
+
+    function renderHistory() {
+      const historyList = document.getElementById("historyList");
+      const history = getHistory();
+
+      if (history.length === 0) {
+        historyList.innerHTML = `
+          <div class="history-item">
+            <div class="strong">Aucune commande enregistrée pour le moment.</div>
+          </div>
+        `;
+        return;
+      }
+
+      historyList.innerHTML = history.map(item => `
+        <div class="history-item">
+          <div class="small-label">${item.date}</div>
+          <div class="strong">${item.products}</div>
+          <div class="small-label" style="margin-top:8px;">${item.total}</div>
+        </div>
+      `).join("");
+    }
+
+    loadTheme();
+    updateCartCount();
+    renderHistory();
+  </script>
+</body>
+  </html>
