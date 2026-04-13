@@ -293,20 +293,28 @@
       margin-bottom: 22px;
     }
 
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeLoop 16s linear infinite;
+    }
+
     .marquee-text {
-      display: inline-block;
       white-space: nowrap;
       color: white;
       font-weight: bold;
       font-size: 15px;
-      padding-left: 18%;
-      animation: defilement 12s linear infinite;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      padding-right: 40px;
     }
 
-    @keyframes defilement {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
+    @keyframes marqueeLoop {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
     }
 
     .subtitle {
@@ -394,7 +402,6 @@
 
       .marquee-text {
         font-size: 14px;
-        padding-left: 10%;
       }
     }
   </style>
@@ -521,8 +528,13 @@
       <h1>Bienvenue sur FF Secure Shop 💎</h1>
 
       <div class="marquee-wrap">
-        <div class="marquee-text">
-          ⏰ Livraison envoyée pendant l’heure d’ouverture • ⏰ Livraison envoyée pendant l’heure d’ouverture •
+        <div class="marquee-track">
+          <div class="marquee-text">
+            ⏰ Livraison envoyée pendant l’heure d’ouverture • 💎 Top Up instantané • 🔥 Abonnements disponibles •
+          </div>
+          <div class="marquee-text">
+            ⏰ Livraison envoyée pendant l’heure d’ouverture • 💎 Top Up instantané • 🔥 Abonnements disponibles •
+          </div>
         </div>
       </div>
 
