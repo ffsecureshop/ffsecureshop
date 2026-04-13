@@ -8,149 +8,92 @@
   body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #5bc0f8, #8c5ef8);
-    transition: background 0.3s, color 0.3s;
+    background: linear-gradient(135deg, #6dd5fa, #2980b9);
+    color: #fff;
   }
-  .navbar {
+  .header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    background: linear-gradient(90deg, #8c5ef8, #5bc0f8);
     padding: 10px;
-    border-radius: 20px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
     margin: 10px;
   }
-  .navbar button {
-    background: none;
-    border: none;
-    font-size: 24px;
-    margin-left: 10px;
+  .icon {
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
     cursor: pointer;
+    font-size: 18px;
   }
-  .navbar button:hover {
-    opacity: 0.7;
+  .cart {
+    position: relative;
+  }
+  .cart span {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 50%;
   }
   .container {
     text-align: center;
+    margin: 30px 10px;
     padding: 20px;
-    color: black;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
   }
-  .info-box {
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    padding: 10px;
-    display: inline-block;
-    margin: 10px 0;
-  }
-  .btn {
-    display: inline-block;
-    background: #0ff;
+  .button {
+    display: block;
+    margin: 10px auto;
+    padding: 15px;
+    width: 80%;
+    max-width: 300px;
+    background: #66fcf1;
+    color: #000;
+    font-weight: bold;
     border: none;
-    padding: 15px 30px;
-    margin: 10px;
-    font-size: 18px;
     border-radius: 10px;
     cursor: pointer;
+    text-decoration: none;
   }
-  /* Panneaux flottants */
-  .panel {
-    display: none;
-    position: fixed;
-    top: 70px;
-    right: 10px;
-    width: 300px;
-    max-height: 400px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    padding: 20px;
-    overflow-y: auto;
-    z-index: 100;
-  }
-  .panel h3 {
-    margin-top: 0;
-  }
-  /* Mode sombre */
-  body.dark {
-    background: #222;
-    color: #eee;
-  }
-  body.dark .container, body.dark .info-box {
-    color: #eee;
-  }
-  body.dark .panel {
-    background: #333;
-    color: #eee;
+  .button:hover {
+    background: #45a29e;
   }
 </style>
 </head>
 <body>
-<div class="navbar">
-  <button id="toggle-dark">&#9790;</button>
-  <button id="open-history">&#128339;</button>
-  <button id="open-account">&#128100;</button>
-  <button id="open-cart">&#128722;<span id="cart-count">0</span></button>
+
+<div class="header">
+  <div class="icon" onclick="alert('Menu clicqué !')">&#9776;</div>
+  <div class="icon" onclick="alert('Historique clicqué !')">&#128340;</div>
+  <div class="icon" onclick="alert('Profil clicqué !')">&#128100;</div>
+  <div class="icon" onclick="alert('Mode nuit clicqué !')">&#9788;</div>
+  <div class="icon cart" onclick="alert('Panier clicqué !')">
+    &#128722;<span>0</span>
+  </div>
 </div>
 
 <div class="container">
   <h1>Bienvenue sur FF Secure Shop 💎</h1>
-  <div class="info-box">
-    heure d’ouverture • 💎 Top Up instantané • 🔥 Abonnements disponibles
-  </div>
-  <div>
-    <button class="btn" id="topup-btn">Top Up</button>
-    <button class="btn" id="sub-btn">Abonnement</button>
-  </div>
-  <div class="info-box">
-    Paiement : Orange Money • Mvola
-  </div>
+  <p>Rechargez vos diamants rapidement et en toute sécurité.</p>
+  <p>⚡ Livraison rapide • 💎 Top Up instantané • 🔥 Abonnements disponibles</p>
+  
+  <a href="topup.html" class="button">Top Up</a>
+  <a href="abonnement.html" class="button">Abonnement</a>
+  
+  <p>Paiement : Orange Money • Mvola</p>
 </div>
 
-<!-- Panneaux flottants -->
-<div class="panel" id="cart-panel">
-  <h3>Panier</h3>
-  <p>Le panier est vide pour le moment.</p>
-</div>
-
-<div class="panel" id="account-panel">
-  <h3>Compte</h3>
-  <p>Connexion / Inscription ici.</p>
-</div>
-
-<div class="panel" id="history-panel">
-  <h3>Historique</h3>
-  <p>Aucun historique pour le moment.</p>
-</div>
-
-<script>
-  const darkBtn = document.getElementById('toggle-dark');
-  const cartBtn = document.getElementById('open-cart');
-  const accountBtn = document.getElementById('open-account');
-  const historyBtn = document.getElementById('open-history');
-
-  const cartPanel = document.getElementById('cart-panel');
-  const accountPanel = document.getElementById('account-panel');
-  const historyPanel = document.getElementById('history-panel');
-
-  darkBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark');
-  });
-
-  cartBtn.addEventListener('click', () => {
-    cartPanel.style.display = cartPanel.style.display === 'block' ? 'none' : 'block';
-    accountPanel.style.display = 'none';
-    historyPanel.style.display = 'none';
-  });
-  accountBtn.addEventListener('click', () => {
-    accountPanel.style.display = accountPanel.style.display === 'block' ? 'none' : 'block';
-    cartPanel.style.display = 'none';
-    historyPanel.style.display = 'none';
-  });
-  historyBtn.addEventListener('click', () => {
-    historyPanel.style.display = historyPanel.style.display === 'block' ? 'none' : 'block';
-    cartPanel.style.display = 'none';
-    accountPanel.style.display = 'none';
-  });
-</script>
 </body>
 </html>
