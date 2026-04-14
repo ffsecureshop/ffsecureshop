@@ -822,4 +822,58 @@
       <div class="contact-section">
         <div class="contact-title">Contactez-nous</div>
         <div class="social-links">
-          <a class="so
+          <a class="social-link facebook" href="https://www.facebook.com/ffsecureshop2026" target="_blank" aria-label="Facebook">
+  <i class="fa-brands fa-facebook-f"></i>
+</a>
+<a class="social-link messenger" href="https://m.me/ffsecureshop2026" target="_blank" aria-label="Messenger">
+  <i class="fa-brands fa-facebook-messenger"></i>
+</a>
+</div> <!-- .social-links -->
+</div> <!-- .contact-section -->
+</div> <!-- .hero -->
+</div> <!-- .container -->
+
+<script>
+const PANELS = {
+  menu: document.getElementById("menuPanel"),
+  history: document.getElementById("historyPanel"),
+  account: document.getElementById("accountPanel"),
+  theme: document.getElementById("themePanel"),
+  cart: document.getElementById("cartPanel")
+};
+
+function closePanels() {
+  Object.values(PANELS).forEach(panel => panel.classList.remove("show"));
+}
+
+function togglePanel(name) {
+  const panel = PANELS[name];
+  const isOpen = panel.classList.contains("show");
+  closePanels();
+  if (!isOpen) panel.classList.add("show");
+}
+
+document.getElementById("menuBtn").addEventListener("click", e => { e.stopPropagation(); togglePanel("menu"); });
+document.getElementById("historyBtn").addEventListener("click", e => { e.stopPropagation(); togglePanel("history"); });
+document.getElementById("accountBtn").addEventListener("click", e => { e.stopPropagation(); togglePanel("account"); });
+document.getElementById("themeBtn").addEventListener("click", e => { e.stopPropagation(); togglePanel("theme"); });
+document.getElementById("cartBtn").addEventListener("click", e => { e.stopPropagation(); togglePanel("cart"); });
+
+document.addEventListener("click", e => {
+  const clickedInsidePanel = e.target.closest(".panel");
+  const clickedIcon = e.target.closest(".icon-btn");
+  if (!clickedInsidePanel && !clickedIcon) closePanels();
+});
+
+// Thèmes
+document.getElementById("lightTheme").addEventListener("click", () => document.body.classList.remove("dark-theme"));
+document.getElementById("darkTheme").addEventListener("click", () => document.body.classList.add("dark-theme"));
+document.getElementById("autoTheme").addEventListener("click", () => {
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  document.body.classList.toggle("dark-theme", prefersDark);
+});
+</script>
+
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
