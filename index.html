@@ -825,4 +825,432 @@
       <div class="btn-group">
         <a href="topup.html" class="main-btn">Top Up</a>
         <a href="abonnement.html" class="main-btn">Abonnement</a>
-      </
+      <a href="abonnement.html" class="main-btn">Abonnement</a>
+      </div>
+
+      <p class="mini-text">
+        Paiement : Orange Money • Mvola
+      </p>
+
+      <div class="contact-section">
+        <div class="contact-title">Contactez-nous</div>
+        <div class="social-links">
+          <a class="social-link facebook" href="https://www.facebook.com/ffsecureshop2026" target="_blank" aria-label="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+
+          <a class="social-link messenger" href="https://m.me/ffsecureshop2026" target="_blank" aria-label="Messenger">
+            <i class="fa-brands fa-facebook-messenger"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PANELS = {
+      menu: document.getElementById("menuPanel"),
+      history: document.getElementById("historyPanel"),
+      account: document.getElementById("accountPanel"),
+      theme: document.getElementById("themePanel"),
+      cart: document.getElementById("cartPanel")
+    };
+
+    function closePanels() {
+      Object.values(PANELS).forEach(panel => panel.classList.remove("show"));
+    }
+
+    function togglePanel(name) {
+      const panel = PANELS[name];
+      const isOpen = panel.classList.contains("show");
+      closePanels();
+      if (!isOpen) {
+        panel.classList.add("show");
+        if (name === "cart") renderCart();
+        if (name === "history") renderHistory();
+        if (name === "account") renderUserStatus();
+      }
+    }
+
+    document.getElementById("menuBtn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      togglePanel("menu");
+    });
+
+    document.getElementById("historyBtn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      togglePanel("history");
+    });
+
+    document.getElementById("accountBtn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      togglePanel("account");
+    });
+
+    document.getElementById("themeBtn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      togglePanel("theme");
+    });
+
+    document.getElementById("cartBtn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      togglePanel("cart");
+    });
+
+    document.addEventListener("click", function (e) {
+      const clickedInsidePanel = e.target.closest(".panel");
+      const clickedIcon = e.target.closest(".icon-btn");
+      if (!clickedInsidePanel && !clickedIcon) {
+        closePanels();
+      }
+    });
+
+    function getCart() {
+      return JSON.parse(localStorage.getItem("ff_cart") || "[]");
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem("ff_cart", JSON.stringify(cart));
+    }
+
+    function getOrders() {
+      return JSON.parse(localStorage.getItem("ff_orders") || "[]");
+    }
+
+    function saveOrders(orders) {
+      localStorage.setItem("ff_orders", JSON.stringify(orders));
+    }
+
+    function getUsers() {
+      return JSON.parse(localStorage.getItem("ff_users") || "[]");
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem("ff_users", JSON.stringify(users));
+    }
+
+    function getCurrentUser() {
+      return JSON.parse(localStorage.getItem("ff_current_user") || "null");
+    }
+
+    function saveCurrentUser(user) {
+      localStorage.setItem("ff_current_user", JSON.stringify(user));
+    }
+
+    function formatAr(value) {
+      return value.toLocaleString("fr-FR") + " Ar";
+    }
+
+    function increaseQty(index) {
+      const cart = getCart();
+      cart[index].qty += 1;
+      saveCart(cart);
+      renderCart();
+    }
+
+    function decreaseQty(index) {
+      const cart = getCart();
+      cart[index].qty -= 1;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      saveCart(cart);
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      const cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function clearCart() {
+      localStorage.removeItem("ff_cart");
+      renderCart();
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      const cartCount = document.getElementById("cartCount");
+      const cartList = document.getElementById("cartList");
+      const cartTotal = document.getElementById("cartTotal");
+      const emptyState = document.getElementById("emptyState");
+      const filledState = document.getElementById("filledState");
+      const cartSummary = document.getElementById("cartSummary");
+      const cartTotalInput = document.getElementById("cartTotalInput");
+      const clientAccountName = document.getElementById("clientAccountName");
+
+      const totalQty = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+      cartCount.textContent = totalQty;
+
+      cartList.innerHTML = "";
+
+      const currentUser = getCurrentUser();
+      clientAccountName.value = currentUser ? currentUser.name : "Non connecté";
+
+      if (cart.length === 0) {
+        emptyState.style.display = "block";
+        filledState.style.display = "none";
+        cartSummary.value = "";
+        cartTotalInput.value = "";
+        cartTotal.textContent = "Total : 0 Ar";
+        return;
+      }
+
+      emptyState.style.display = "none";
+      filledState.style.display = "block";
+
+      let total = 0;
+      let summary = [];
+
+      cart.forEach((item, index) => {
+        const qty = item.qty || 1;
+        const subtotal = item.price * qty;
+        total += subtotal;
+        summary.push(item.name + " x" + qty);
+
+        const li = document.createElement("li");
+        li.className = "cart-item";
+        li.innerHTML = `
+          <div class="cart-item-top">
+            <span class="cart-item-name">${item.name}</span>
+            <button class="remove-btn" type="button" onclick="removeFromCart(${index})">X</button>
+          </div>
+          <div class="cart-controls">
+            <button class="qty-btn" type="button" onclick="decreaseQty(${index})">-</button>
+            <span class="qty-value">${qty}</span>
+            <button class="qty-btn" type="button" onclick="increaseQty(${index})">+</button>
+            <span>${formatAr(subtotal)}</span>
+          </div>
+        `;
+        cartList.appendChild(li);
+      });
+
+      cartTotal.textContent = "Total : " + formatAr(total);
+      cartSummary.value = summary.join(", ");
+      cartTotalInput.value = formatAr(total);
+    }
+
+    function renderHistory() {
+      const orders = getOrders();
+      const historyList = document.getElementById("historyList");
+      const historyEmpty = document.getElementById("historyEmpty");
+      const currentUser = getCurrentUser();
+
+      historyList.innerHTML = "";
+
+      let filteredOrders = orders;
+      if (currentUser) {
+        filteredOrders = orders.filter(order => order.accountName === currentUser.name);
+      }
+
+      if (filteredOrders.length === 0) {
+        historyEmpty.style.display = "block";
+        historyList.style.display = "none";
+        historyEmpty.textContent = currentUser ? "Aucune commande trouvée pour ce compte." : "Aucune commande pour le moment.";
+        return;
+      }
+
+      historyEmpty.style.display = "none";
+      historyList.style.display = "block";
+
+      filteredOrders.slice().reverse().forEach(order => {
+        const li = document.createElement("li");
+        li.className = "history-item";
+        li.innerHTML = `
+          <div class="history-item-top">
+            <span class="history-item-name">${order.items}</span>
+            <span>${order.date}</span>
+          </div>
+          <div>Total : ${order.total}</div>
+          <div>Pseudo : ${order.pseudo}</div>
+          <div>Paiement : ${order.payment}</div>
+        `;
+        historyList.appendChild(li);
+      });
+    }
+
+    document.getElementById("payment_method").addEventListener("change", function () {
+      const val = this.value;
+      const transactionBlock = document.getElementById("transactionBlock");
+      const screenshotBlock = document.getElementById("screenshotBlock");
+      const transactionRef = document.getElementById("transaction_ref");
+      const screenshot = document.getElementById("screenshot");
+
+      if (val === "Référence de transaction") {
+        transactionBlock.style.display = "block";
+        screenshotBlock.style.display = "none";
+        transactionRef.required = true;
+        screenshot.required = false;
+        screenshot.value = "";
+      } else if (val === "Capture d'écran") {
+        transactionBlock.style.display = "none";
+        screenshotBlock.style.display = "block";
+        transactionRef.required = false;
+        screenshot.required = true;
+        transactionRef.value = "";
+      } else {
+        transactionBlock.style.display = "none";
+        screenshotBlock.style.display = "none";
+        transactionRef.required = false;
+        screenshot.required = false;
+        transactionRef.value = "";
+        screenshot.value = "";
+      }
+    });
+
+    document.getElementById("clearCart").addEventListener("click", clearCart);
+
+    document.getElementById("orderForm").addEventListener("submit", function () {
+      const orders = getOrders();
+      const currentUser = getCurrentUser();
+
+      const order = {
+        items: document.getElementById("cartSummary").value,
+        total: document.getElementById("cartTotalInput").value,
+        pseudo: document.getElementById("pseudo").value,
+        payment: document.getElementById("transfer_number").value,
+        date: new Date().toLocaleString("fr-FR"),
+        accountName: currentUser ? currentUser.name : "Non connecté"
+      };
+
+      orders.push(order);
+      saveOrders(orders);
+      localStorage.removeItem("ff_cart");
+    });
+
+    const loginBox = document.getElementById("loginBox");
+    const signupBox = document.getElementById("signupBox");
+    const showLogin = document.getElementById("showLogin");
+    const showSignup = document.getElementById("showSignup");
+
+    showLogin.addEventListener("click", () => {
+      showLogin.classList.add("active");
+      showSignup.classList.remove("active");
+      loginBox.classList.add("show");
+      signupBox.classList.remove("show");
+    });
+
+    showSignup.addEventListener("click", () => {
+      showSignup.classList.add("active");
+      showLogin.classList.remove("active");
+      signupBox.classList.add("show");
+      loginBox.classList.remove("show");
+    });
+
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const users = getUsers();
+      const name = document.getElementById("signupName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim().toLowerCase();
+      const password = document.getElementById("signupPassword").value;
+
+      if (users.find(u => u.email === email)) {
+        alert("Cet email existe déjà.");
+        return;
+      }
+
+      const user = { name, email, password };
+      users.push(user);
+      saveUsers(users);
+      saveCurrentUser({ name, email });
+      this.reset();
+      renderUserStatus();
+      alert("Inscription réussie.");
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const users = getUsers();
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+      const password = document.getElementById("loginPassword").value;
+
+      const user = users.find(u => u.email === email && u.password === password);
+      if (!user) {
+        alert("Email ou mot de passe incorrect.");
+        return;
+      }
+
+      saveCurrentUser({ name: user.name, email: user.email });
+      this.reset();
+      renderUserStatus();
+      alert("Connexion réussie.");
+    });
+
+    function renderUserStatus() {
+      const userStatus = document.getElementById("userStatus");
+      const currentUser = getCurrentUser();
+
+      if (currentUser) {
+        userStatus.style.display = "block";
+        userStatus.innerHTML = `
+          Connecté : ${currentUser.name}
+          <br><br>
+          <button class="mini-btn dark" type="button" onclick="logoutUser()">Se déconnecter</button>
+        `;
+      } else {
+        userStatus.style.display = "none";
+        userStatus.innerHTML = "";
+      }
+    }
+
+    function logoutUser() {
+      localStorage.removeItem("ff_current_user");
+      renderUserStatus();
+      alert("Déconnecté.");
+    }
+
+    const themeButtons = document.querySelectorAll(".theme-btn");
+
+    function setActiveThemeButton(mode) {
+      themeButtons.forEach(btn => btn.classList.remove("active"));
+
+      if (mode === "light") {
+        document.getElementById("lightTheme").classList.add("active");
+      } else if (mode === "dark") {
+        document.getElementById("darkTheme").classList.add("active");
+      } else {
+        document.getElementById("autoTheme").classList.add("active");
+      }
+    }
+
+    function applyTheme(mode) {
+      localStorage.setItem("ff_theme_mode", mode);
+
+      if (mode === "dark") {
+        document.body.classList.add("dark-theme");
+      } else if (mode === "light") {
+        document.body.classList.remove("dark-theme");
+      } else {
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.body.classList.toggle("dark-theme", prefersDark);
+      }
+
+      setActiveThemeButton(mode);
+    }
+
+    document.getElementById("lightTheme").addEventListener("click", () => {
+      applyTheme("light");
+    });
+
+    document.getElementById("darkTheme").addEventListener("click", () => {
+      applyTheme("dark");
+    });
+
+    document.getElementById("autoTheme").addEventListener("click", () => {
+      applyTheme("auto");
+    });
+
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+      if ((localStorage.getItem("ff_theme_mode") || "light") === "auto") {
+        applyTheme("auto");
+      }
+    });
+
+    applyTheme(localStorage.getItem("ff_theme_mode") || "light");
+    renderCart();
+    renderUserStatus();
+  </script>
+</body>
+</html>
