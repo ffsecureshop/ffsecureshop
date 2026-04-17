@@ -34,7 +34,6 @@
       --muted:#64748b;
       --success:#16a34a;
       --danger:#ff2f6d;
-      --warning:#f59e0b;
     }
 
     body.dark-theme{
@@ -61,10 +60,21 @@
       transition:.25s ease;
     }
 
+    body.modal-open{
+      overflow:hidden;
+    }
+
     .container{
       width:100%;
       max-width:980px;
       margin:0 auto;
+    }
+
+    .topbar-wrap{
+      position:sticky;
+      top:10px;
+      z-index:60;
+      margin-bottom:16px;
     }
 
     .topbar{
@@ -78,10 +88,6 @@
       background:var(--topbar);
       border:2px solid rgba(255,255,255,0.2);
       box-shadow:0 10px 24px rgba(0,0,0,0.15);
-      margin-bottom:16px;
-      position:sticky;
-      top:12px;
-      z-index:40;
     }
 
     .left-zone,.right-zone{
@@ -129,29 +135,25 @@
       padding:0 5px;
     }
 
-    .cart-badge{
-      background:var(--danger);
-    }
-
+    .cart-badge{ background:var(--danger); }
     .notif-badge{
       background:#111827;
       display:none;
     }
 
-    .panel{
+    .dropdown-panel{
       display:none;
       width:100%;
+      margin-top:10px;
       background:var(--panel);
       color:var(--panel-text);
       border-radius:22px;
       padding:16px;
-      margin-bottom:16px;
       box-shadow:0 10px 24px rgba(0,0,0,0.15);
-      position:relative;
-      z-index:5;
+      border:1px solid rgba(255,255,255,0.12);
     }
 
-    .panel.show{
+    .dropdown-panel.show{
       display:block;
       animation:fadeIn .18s ease;
     }
@@ -159,14 +161,14 @@
     .modal-overlay{
       position:fixed;
       inset:0;
-      background:rgba(0,0,0,0.42);
+      background:rgba(0,0,0,0.45);
       backdrop-filter:blur(4px);
       -webkit-backdrop-filter:blur(4px);
       display:none;
       align-items:center;
       justify-content:center;
       padding:18px;
-      z-index:100;
+      z-index:120;
     }
 
     .modal-overlay.show{
@@ -175,7 +177,7 @@
     }
 
     .modal-card{
-      width:min(100%,520px);
+      width:min(100%,540px);
       max-height:85vh;
       overflow:auto;
       background:var(--panel);
@@ -187,7 +189,7 @@
     }
 
     .modal-card.wide{
-      width:min(100%,700px);
+      width:min(100%,720px);
     }
 
     .panel-head{
@@ -199,11 +201,10 @@
     }
 
     .panel-head h2{
-      margin-bottom:0;
       font-size:24px;
     }
 
-    .close-panel-btn{
+    .close-btn{
       width:38px;
       height:38px;
       border:none;
@@ -291,12 +292,6 @@
 
     .account-box.show{
       display:block;
-    }
-
-    .social-auth{
-      display:grid;
-      gap:10px;
-      margin-bottom:12px;
     }
 
     .social-auth-btn{
@@ -688,7 +683,7 @@
 
     .goto-title{
       font-weight:700;
-      margin-bottom:10px;
+      margin:12px 0 10px;
     }
 
     .toast-wrap{
@@ -727,8 +722,11 @@
         padding:10px;
       }
 
+      .topbar-wrap{
+        top:8px;
+      }
+
       .topbar{
-        top:10px;
         padding:8px;
         gap:6px;
       }
@@ -798,12 +796,12 @@
       .modal-overlay{
         padding:10px;
         align-items:flex-start;
-        padding-top:90px;
+        padding-top:80px;
       }
 
       .modal-card{
         width:100%;
-        max-height:calc(100vh - 110px);
+        max-height:calc(100vh - 95px);
       }
     }
 
@@ -828,68 +826,70 @@
 </head>
 <body>
   <div class="container">
-    <div class="topbar">
-      <div class="left-zone">
-        <button class="icon-btn" id="menuBtn" type="button">
-          <i class="fa-solid fa-bars"></i>
-        </button>
+    <div class="topbar-wrap">
+      <div class="topbar">
+        <div class="left-zone">
+          <button class="icon-btn" id="menuBtn" type="button">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+
+        <div class="right-zone">
+          <button class="icon-btn" id="historyBtn" type="button">
+            <i class="fa-regular fa-clock"></i>
+          </button>
+
+          <button class="icon-btn" id="accountBtn" type="button">
+            <i class="fa-regular fa-user"></i>
+          </button>
+
+          <button class="icon-btn" id="themeBtn" type="button">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+          </button>
+
+          <button class="icon-btn" id="notificationBtn" type="button">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-badge" id="notifBadge">0</span>
+          </button>
+
+          <button class="icon-btn" id="cartBtn" type="button">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </button>
+        </div>
       </div>
 
-      <div class="right-zone">
-        <button class="icon-btn" id="historyBtn" type="button">
-          <i class="fa-regular fa-clock"></i>
-        </button>
-
-        <button class="icon-btn" id="accountBtn" type="button">
-          <i class="fa-regular fa-user"></i>
-        </button>
-
-        <button class="icon-btn" id="themeBtn" type="button">
-          <i class="fa-solid fa-circle-half-stroke"></i>
-        </button>
-
-        <button class="icon-btn" id="notificationBtn" type="button">
-          <i class="fa-solid fa-bell"></i>
-          <span class="notif-badge" id="notifBadge">0</span>
-        </button>
-
-        <button class="icon-btn" id="cartBtn" type="button">
-          <i class="fa-solid fa-cart-shopping"></i>
-          <span class="cart-badge" id="cartCount">0</span>
-        </button>
+      <div class="dropdown-panel" id="menuPanel">
+        <div class="panel-head">
+          <h2>Menu</h2>
+          <button class="close-btn" type="button" data-close-panel="menu">&times;</button>
+        </div>
+        <div class="menu-grid">
+          <a class="menu-link" href="topup.html">Top Up</a>
+          <a class="menu-link" href="abonnement.html">Abonnement</a>
+        </div>
       </div>
-    </div>
 
-    <div class="panel" id="menuPanel">
-      <div class="panel-head">
-        <h2>Menu</h2>
-        <button class="close-panel-btn" type="button" data-close-panel="menu">&times;</button>
-      </div>
-      <div class="menu-grid">
-        <a class="menu-link" href="topup.html">Top Up</a>
-        <a class="menu-link" href="abonnement.html">Abonnement</a>
-      </div>
-    </div>
-
-    <div class="panel" id="themePanel">
-      <div class="panel-head">
-        <h2>Thème</h2>
-        <button class="close-panel-btn" type="button" data-close-panel="theme">&times;</button>
-      </div>
-      <p class="small-note">Choisissez l’apparence du site.</p>
-      <div class="theme-list">
-        <button class="theme-btn" id="lightTheme" type="button">
-          <span class="theme-icon"><i class="fa-solid fa-sun"></i></span>
-          <span class="theme-text">Clair</span>
-        </button>
-        <button class="theme-btn" id="darkTheme" type="button">
-          <span class="theme-icon"><i class="fa-solid fa-moon"></i></span>
-          <span class="theme-text">Sombre</span>
-        </button>
-        <button class="theme-btn" id="autoTheme" type="button">
-          <span class="theme-icon"><i class="fa-solid fa-circle-half-stroke"></i></span>
-          <span class="theme-text">Auto</span>
-        </button>
+      <div class="dropdown-panel" id="themePanel">
+        <div class="panel-head">
+          <h2>Thème</h2>
+          <button class="close-btn" type="button" data-close-panel="theme">&times;</button>
+        </div>
+        <p class="small-note">Choisissez l’apparence du site.</p>
+        <div class="theme-list">
+          <button class="theme-btn" id="lightTheme" type="button">
+            <span class="theme-icon"><i class="fa-solid fa-sun"></i></span>
+            <span class="theme-text">Clair</span>
+          </button>
+          <button class="theme-btn" id="darkTheme" type="button">
+            <span class="theme-icon"><i class="fa-solid fa-moon"></i></span>
+            <span class="theme-text">Sombre</span>
+          </button>
+          <button class="theme-btn" id="autoTheme" type="button">
+            <span class="theme-icon"><i class="fa-solid fa-circle-half-stroke"></i></span>
+            <span class="theme-text">Auto</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -940,12 +940,12 @@
     <div class="modal-card wide">
       <div class="panel-head">
         <h2>Votre panier</h2>
-        <button class="close-panel-btn" type="button" data-close-modal="cart">&times;</button>
+        <button class="close-btn" type="button" data-close-modal="cart">&times;</button>
       </div>
 
       <div id="emptyState">
         <p class="cart-empty">Le panier est vide pour le moment.</p>
-        <div class="goto-title" style="margin-top:12px;">Aller vers :</div>
+        <div class="goto-title">Aller vers :</div>
         <div class="menu-grid">
           <a class="menu-link" href="topup.html">Top Up</a>
           <a class="menu-link" href="abonnement.html">Abonnement</a>
@@ -1015,7 +1015,7 @@
     <div class="modal-card">
       <div class="panel-head">
         <h2>Compte</h2>
-        <button class="close-panel-btn" type="button" data-close-modal="account">&times;</button>
+        <button class="close-btn" type="button" data-close-modal="account">&times;</button>
       </div>
 
       <div id="guestAccountView">
@@ -1094,7 +1094,7 @@
     <div class="modal-card">
       <div class="panel-head">
         <h2>Historique</h2>
-        <button class="close-panel-btn" type="button" data-close-modal="history">&times;</button>
+        <button class="close-btn" type="button" data-close-modal="history">&times;</button>
       </div>
       <div id="historyEmpty" class="history-empty">Aucune commande pour le moment.</div>
       <ul id="historyList" class="history-list" style="display:none;"></ul>
@@ -1105,7 +1105,7 @@
     <div class="modal-card">
       <div class="panel-head">
         <h2>Notifications</h2>
-        <button class="close-panel-btn" type="button" data-close-modal="notification">&times;</button>
+        <button class="close-btn" type="button" data-close-modal="notification">&times;</button>
       </div>
       <div id="notificationEmpty" class="notif-empty">Aucune notification pour le moment.</div>
       <ul id="notificationList" class="notif-list" style="display:none;"></ul>
@@ -1182,20 +1182,19 @@
       const panel = PANELS[name];
       const isOpen = panel.classList.contains("show");
       closePanels();
-      closeModals();
       if (!isOpen) panel.classList.add("show");
     }
 
     function closeModals(){
       Object.values(MODALS).forEach(modal => modal.classList.remove("show"));
-      document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
     }
 
     function openModal(name){
       closePanels();
       closeModals();
       MODALS[name].classList.add("show");
-      document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
 
       if (name === "cart") renderCart();
       if (name === "history") renderHistory();
@@ -1254,7 +1253,7 @@
     });
 
     document.addEventListener("click", function (e) {
-      const clickedInsidePanel = e.target.closest(".panel");
+      const clickedInsidePanel = e.target.closest(".dropdown-panel");
       const clickedInsideModalCard = e.target.closest(".modal-card");
       const clickedIcon = e.target.closest(".icon-btn");
       if (!clickedInsidePanel && !clickedInsideModalCard && !clickedIcon) {
