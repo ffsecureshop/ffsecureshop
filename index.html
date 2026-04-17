@@ -95,7 +95,7 @@
       border-radius:14px;
       background:var(--icon-bg);
       border:2px solid var(--icon-border);
-      color:#000;
+      color:#fff;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -144,11 +144,49 @@
       padding:16px;
       margin-bottom:16px;
       box-shadow:0 10px 24px rgba(0,0,0,0.15);
+      position:relative;
+      z-index:5;
     }
 
     .panel.show{
       display:block;
       animation:fadeIn .18s ease;
+    }
+
+    .account-panel{
+      background:rgba(255,255,255,0.18);
+      backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,0.18);
+    }
+
+    body.dark-theme .account-panel{
+      background:rgba(15,23,42,0.72);
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .panel-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .panel-head h2{
+      margin-bottom:0;
+    }
+
+    .close-panel-btn{
+      width:38px;
+      height:38px;
+      border:none;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:20px;
+      background:rgba(255,255,255,0.18);
+      color:var(--panel-text);
+      border:1px solid rgba(255,255,255,0.15);
     }
 
     @keyframes fadeIn{
@@ -280,11 +318,6 @@
       border:1px solid #d1d5db;
     }
 
-    .social-auth-btn.facebook{
-      background:#1877f2;
-      color:#fff;
-    }
-
     .auth-divider{
       text-align:center;
       color:var(--muted);
@@ -339,6 +372,10 @@
     .mini-btn.dark{
       background:#222;
       color:#fff;
+    }
+
+    .logout-wrap{
+      margin-top:14px;
     }
 
     .cart-list,.history-list,.notif-list{
@@ -434,6 +471,48 @@
     .status-pill.completed{
       background:#d1fae5;
       color:#065f46;
+    }
+
+    .profile-card{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.12);
+      border:1px solid rgba(255,255,255,0.12);
+    }
+
+    body.dark-theme .profile-card{
+      background:rgba(255,255,255,0.05);
+    }
+
+    .profile-avatar{
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:20px;
+      font-weight:700;
+      background:linear-gradient(to right,#8b5cf6,#22d3ee);
+      color:#fff;
+      flex-shrink:0;
+    }
+
+    .profile-name{
+      font-weight:700;
+      font-size:16px;
+      line-height:1.4;
+      word-break:break-word;
+    }
+
+    .profile-mail{
+      font-size:13px;
+      color:var(--muted);
+      word-break:break-word;
+      line-height:1.5;
     }
 
     .hero{
@@ -557,8 +636,8 @@
     }
 
     .social-link{
-      width:52px;
-      height:52px;
+      width:46px;
+      height:46px;
       border-radius:50%;
       display:flex;
       align-items:center;
@@ -571,7 +650,7 @@
     }
 
     .social-link i{
-      font-size:24px;
+      font-size:22px;
     }
 
     .social-link.facebook i{
@@ -682,12 +761,12 @@
       }
 
       .social-link{
-        width:46px;
-        height:46px;
+        width:44px;
+        height:44px;
       }
 
       .social-link i{
-        font-size:22px;
+        font-size:20px;
       }
 
       .toast-wrap{
@@ -756,7 +835,10 @@
     </div>
 
     <div class="panel" id="menuPanel">
-      <h2>Menu</h2>
+      <div class="panel-head">
+        <h2>Menu</h2>
+        <button class="close-panel-btn" type="button" data-close-panel="menu">&times;</button>
+      </div>
       <div class="menu-grid">
         <a class="menu-link" href="topup.html">Top Up</a>
         <a class="menu-link" href="abonnement.html">Abonnement</a>
@@ -764,7 +846,10 @@
     </div>
 
     <div class="panel" id="themePanel">
-      <h2>Thème</h2>
+      <div class="panel-head">
+        <h2>Thème</h2>
+        <button class="close-panel-btn" type="button" data-close-panel="theme">&times;</button>
+      </div>
       <p class="small-note">Choisissez l’apparence du site.</p>
       <div class="theme-list">
         <button class="theme-btn" id="lightTheme" type="button">
@@ -783,93 +868,113 @@
     </div>
 
     <div class="panel" id="notificationPanel">
-      <h2>Notifications</h2>
+      <div class="panel-head">
+        <h2>Notifications</h2>
+        <button class="close-panel-btn" type="button" data-close-panel="notification">&times;</button>
+      </div>
       <div id="notificationEmpty" class="notif-empty">Aucune notification pour le moment.</div>
       <ul id="notificationList" class="notif-list" style="display:none;"></ul>
     </div>
 
-    <div class="panel" id="accountPanel">
-      <h2>Compte</h2>
-
-      <div class="account-grid">
-        <button class="account-tab active" id="showLogin" type="button">Connexion</button>
-        <button class="account-tab" id="showSignup" type="button">Inscription</button>
+    <div class="panel account-panel" id="accountPanel">
+      <div class="panel-head">
+        <h2>Compte</h2>
+        <button class="close-panel-btn" type="button" data-close-panel="account">&times;</button>
       </div>
 
-      <div class="account-box show" id="loginBox">
-        <div class="social-auth">
-          <button class="social-auth-btn google" id="loginGoogle" type="button">
-            <i class="fa-brands fa-google"></i>
-            Google
-          </button>
-          <button class="social-auth-btn facebook" id="loginFacebook" type="button">
-            <i class="fa-brands fa-facebook-f"></i>
-            Facebook
-          </button>
+      <div id="guestAccountView">
+        <div class="account-grid">
+          <button class="account-tab active" id="showLogin" type="button">Connexion</button>
+          <button class="account-tab" id="showSignup" type="button">Inscription</button>
         </div>
 
-        <div class="auth-divider">ou</div>
-
-        <form id="loginForm">
-          <div class="form-group">
-            <label for="loginEmail">Email</label>
-            <input id="loginEmail" type="email" placeholder="Votre email" required />
+        <div class="account-box show" id="loginBox">
+          <div class="social-auth">
+            <button class="social-auth-btn google" id="loginGoogle" type="button">
+              <i class="fa-brands fa-google"></i>
+              Google
+            </button>
           </div>
 
-          <div class="form-group">
-            <label for="loginPassword">Mot de passe</label>
-            <input id="loginPassword" type="password" placeholder="Votre mot de passe" required />
+          <div class="auth-divider">ou</div>
+
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" type="email" placeholder="Votre email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="loginPassword">Mot de passe</label>
+              <input id="loginPassword" type="password" placeholder="Votre mot de passe" required />
+            </div>
+
+            <button class="submit-btn full" type="submit">Se connecter</button>
+          </form>
+        </div>
+
+        <div class="account-box" id="signupBox">
+          <div class="social-auth">
+            <button class="social-auth-btn google" id="signupGoogle" type="button">
+              <i class="fa-brands fa-google"></i>
+              Google
+            </button>
           </div>
 
-          <button class="submit-btn full" type="submit">Se connecter</button>
-        </form>
+          <div class="auth-divider">ou</div>
+
+          <form id="signupForm">
+            <div class="form-group">
+              <label for="signupName">Nom et prénom</label>
+              <input id="signupName" type="text" placeholder="Votre nom et prénom" required />
+            </div>
+
+            <div class="form-group">
+              <label for="signupEmail">Email</label>
+              <input id="signupEmail" type="email" placeholder="Votre email" required />
+            </div>
+
+            <div class="form-group">
+              <label for="signupPassword">Mot de passe</label>
+              <input id="signupPassword" type="password" placeholder="Choisissez un mot de passe" required />
+            </div>
+
+            <button class="submit-btn full" type="submit">S’inscrire</button>
+          </form>
+        </div>
       </div>
 
-      <div class="account-box" id="signupBox">
-        <div class="social-auth">
-          <button class="social-auth-btn google" id="signupGoogle" type="button">
-            <i class="fa-brands fa-google"></i>
-            Google
-          </button>
-          <button class="social-auth-btn facebook" id="signupFacebook" type="button">
-            <i class="fa-brands fa-facebook-f"></i>
-            Facebook
-          </button>
+      <div id="loggedAccountView" style="display:none;">
+        <div class="profile-card">
+          <div class="profile-avatar" id="profileAvatar">U</div>
+          <div>
+            <div class="profile-name" id="profileName">Utilisateur</div>
+            <div class="profile-mail" id="profileMail"></div>
+          </div>
         </div>
 
-        <div class="auth-divider">ou</div>
-
-        <form id="signupForm">
-          <div class="form-group">
-            <label for="signupName">Nom</label>
-            <input id="signupName" type="text" placeholder="Votre nom" required />
-          </div>
-
-          <div class="form-group">
-            <label for="signupEmail">Email</label>
-            <input id="signupEmail" type="email" placeholder="Votre email" required />
-          </div>
-
-          <div class="form-group">
-            <label for="signupPassword">Mot de passe</label>
-            <input id="signupPassword" type="password" placeholder="Choisissez un mot de passe" required />
-          </div>
-
-          <button class="submit-btn full" type="submit">S’inscrire</button>
-        </form>
+        <div class="logout-wrap">
+          <button class="mini-btn dark" id="logoutBtn" type="button">Se déconnecter</button>
+        </div>
       </div>
 
       <div class="user-status" id="userStatus" style="display:none;"></div>
     </div>
 
     <div class="panel" id="historyPanel">
-      <h2>Historique</h2>
+      <div class="panel-head">
+        <h2>Historique</h2>
+        <button class="close-panel-btn" type="button" data-close-panel="history">&times;</button>
+      </div>
       <div id="historyEmpty" class="history-empty">Aucune commande pour le moment.</div>
       <ul id="historyList" class="history-list" style="display:none;"></ul>
     </div>
 
     <div class="panel" id="cartPanel">
-      <h2>Votre panier</h2>
+      <div class="panel-head">
+        <h2>Votre panier</h2>
+        <button class="close-panel-btn" type="button" data-close-panel="cart">&times;</button>
+      </div>
 
       <div id="emptyState">
         <p class="cart-empty">Le panier est vide pour le moment.</p>
@@ -921,18 +1026,12 @@
             <select id="payment_method" required>
               <option value="">Choisir...</option>
               <option value="Référence de transaction">Référence de transaction</option>
-              <option value="Capture d'écran">Capture d'écran</option>
             </select>
           </div>
 
           <div class="form-group" id="transactionBlock" style="display:none;">
             <label for="transaction_ref">Référence de transaction</label>
             <input type="text" id="transaction_ref" placeholder="Ex : TRX12345" />
-          </div>
-
-          <div class="form-group" id="screenshotBlock" style="display:none;">
-            <label for="screenshot">Capture d'écran</label>
-            <input type="file" id="screenshot" accept="image/*,.png,.jpg,.jpeg,.gif,.webp" />
           </div>
 
           <div class="form-group">
@@ -988,12 +1087,13 @@
     </div>
   </div>
 
-  <div class="toast-wrap" id="toastWrap"></div><script type="module">
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
     import {
       getAuth,
       GoogleAuthProvider,
-      FacebookAuthProvider,
       signInWithPopup,
       signInWithEmailAndPassword,
       createUserWithEmailAndPassword,
@@ -1010,7 +1110,6 @@
       addDoc,
       query,
       where,
-      orderBy,
       getDocs,
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
@@ -1045,6 +1144,10 @@
 
     function closePanels() {
       Object.values(PANELS).forEach(panel => panel.classList.remove("show"));
+    }
+
+    function closeOnePanel(name){
+      PANELS[name].classList.remove("show");
     }
 
     function togglePanel(name) {
@@ -1091,6 +1194,13 @@
     document.getElementById("notificationBtn").addEventListener("click", (e) => {
       e.stopPropagation();
       togglePanel("notification");
+    });
+
+    document.querySelectorAll("[data-close-panel]").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeOnePanel(btn.dataset.closePanel);
+      });
     });
 
     document.addEventListener("click", function (e) {
@@ -1356,7 +1466,6 @@
     }
 
     const googleProvider = new GoogleAuthProvider();
-    const facebookProvider = new FacebookAuthProvider();
 
     document.getElementById("signupForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -1391,7 +1500,7 @@
       }
     });
 
-    async function loginWithProvider(provider, label) {
+    async function loginWithProvider(provider) {
       try {
         const cred = await signInWithPopup(auth, provider);
         await saveUserProfile(cred.user);
@@ -1402,15 +1511,18 @@
       }
     }
 
-    document.getElementById("loginGoogle").addEventListener("click", () => loginWithProvider(googleProvider, "Google"));
-    document.getElementById("signupGoogle").addEventListener("click", () => loginWithProvider(googleProvider, "Google"));
-    document.getElementById("loginFacebook").addEventListener("click", () => loginWithProvider(facebookProvider, "Facebook"));
-    document.getElementById("signupFacebook").addEventListener("click", () => loginWithProvider(facebookProvider, "Facebook"));
+    document.getElementById("loginGoogle").addEventListener("click", () => loginWithProvider(googleProvider));
+    document.getElementById("signupGoogle").addEventListener("click", () => loginWithProvider(googleProvider));
 
     const loginBox = document.getElementById("loginBox");
     const signupBox = document.getElementById("signupBox");
     const showLogin = document.getElementById("showLogin");
     const showSignup = document.getElementById("showSignup");
+    const guestAccountView = document.getElementById("guestAccountView");
+    const loggedAccountView = document.getElementById("loggedAccountView");
+    const profileAvatar = document.getElementById("profileAvatar");
+    const profileName = document.getElementById("profileName");
+    const profileMail = document.getElementById("profileMail");
 
     showLogin.addEventListener("click", () => {
       showLogin.classList.add("active");
@@ -1426,24 +1538,36 @@
       loginBox.classList.remove("show");
     });
 
+    function firstLetter(text){
+      return (text || "U").trim().charAt(0).toUpperCase();
+    }
+
     function renderUserStatus() {
       const userStatus = document.getElementById("userStatus");
       const user = auth.currentUser;
 
       if (user) {
-        userStatus.style.display = "block";
-        userStatus.innerHTML = `
-          Connecté : ${user.displayName || user.email}
-          <br><br>
-          <button class="mini-btn dark" id="logoutBtn" type="button">Se déconnecter</button>
-        `;
+        guestAccountView.style.display = "none";
+        loggedAccountView.style.display = "block";
+        userStatus.style.display = "none";
+        userStatus.innerHTML = "";
+
+        const display = user.displayName || "Utilisateur";
+        profileAvatar.textContent = firstLetter(display);
+        profileName.textContent = display;
+        profileMail.textContent = user.email || "";
 
         const logoutBtn = document.getElementById("logoutBtn");
-        logoutBtn.addEventListener("click", async () => {
+        logoutBtn.onclick = async () => {
+          const ok = confirm("Voulez-vous vraiment vous déconnecter ?");
+          if (!ok) return;
           await signOut(auth);
           addNotification("Déconnecté");
-        });
+          closeOnePanel("account");
+        };
       } else {
+        guestAccountView.style.display = "block";
+        loggedAccountView.style.display = "none";
         userStatus.style.display = "none";
         userStatus.innerHTML = "";
       }
@@ -1452,29 +1576,15 @@
     document.getElementById("payment_method").addEventListener("change", function () {
       const val = this.value;
       const transactionBlock = document.getElementById("transactionBlock");
-      const screenshotBlock = document.getElementById("screenshotBlock");
       const transactionRef = document.getElementById("transaction_ref");
-      const screenshot = document.getElementById("screenshot");
 
       if (val === "Référence de transaction") {
         transactionBlock.style.display = "block";
-        screenshotBlock.style.display = "none";
         transactionRef.required = true;
-        screenshot.required = false;
-        screenshot.value = "";
-      } else if (val === "Capture d'écran") {
-        transactionBlock.style.display = "none";
-        screenshotBlock.style.display = "block";
-        transactionRef.required = false;
-        screenshot.required = true;
-        transactionRef.value = "";
       } else {
         transactionBlock.style.display = "none";
-        screenshotBlock.style.display = "none";
         transactionRef.required = false;
-        screenshot.required = false;
         transactionRef.value = "";
-        screenshot.value = "";
       }
     });
 
@@ -1519,6 +1629,8 @@
         await addDoc(collection(db, "orders"), orderData);
         localStorage.removeItem("ff_cart");
         e.target.reset();
+        document.getElementById("transactionBlock").style.display = "none";
+        document.getElementById("transaction_ref").required = false;
         renderCart();
         addNotification("Commande envoyée");
         renderHistory();
@@ -1578,4 +1690,4 @@
     updateNotifBadge();
   </script>
 </body>
-</html>
+  </html>
