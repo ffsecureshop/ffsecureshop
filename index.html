@@ -32,17 +32,18 @@
       --text:#ffffff;
       --soft:#eefcff;
       --muted:#64748b;
-      --success:#16a34a;
       --danger:#ff2f6d;
+      --shadow-neon:0 0 16px rgba(20,231,255,0.22),0 0 30px rgba(139,92,246,0.18);
+      --bar-gap:78px;
     }
 
     body.dark-theme{
-      --bg:linear-gradient(to bottom,#0f172a,#1e293b);
+      --bg:linear-gradient(to bottom,#071428,#0f172a,#111827);
       --card:rgba(255,255,255,0.05);
       --card-border:rgba(255,255,255,0.08);
-      --panel:#111827;
+      --panel:#0b1730;
       --panel-text:#f8fafc;
-      --topbar:linear-gradient(to right,#374151,#111827);
+      --topbar:linear-gradient(to right,#334155,#0f172a);
       --btn:#2dd4bf;
       --btn-text:#001b22;
       --icon-bg:rgba(255,255,255,0.08);
@@ -50,6 +51,7 @@
       --text:#f8fafc;
       --soft:#dbeafe;
       --muted:#cbd5e1;
+      --shadow-neon:0 0 18px rgba(34,211,238,0.16),0 0 34px rgba(139,92,246,0.12);
     }
 
     body{
@@ -69,6 +71,8 @@
       max-width:980px;
       margin:0 auto;
       padding-top:84px;
+      position:relative;
+      z-index:1;
     }
 
     .topbar-wrap{
@@ -76,7 +80,7 @@
       top:10px;
       left:10px;
       right:10px;
-      z-index:200;
+      z-index:300;
     }
 
     .topbar-shell{
@@ -96,6 +100,8 @@
       background:var(--topbar);
       border:2px solid rgba(255,255,255,0.2);
       box-shadow:0 10px 24px rgba(0,0,0,0.15);
+      position:relative;
+      z-index:301;
     }
 
     .left-zone,.right-zone{
@@ -121,6 +127,7 @@
       flex-shrink:0;
       position:relative;
       transition:.18s ease;
+      box-shadow:0 0 0 rgba(0,0,0,0);
     }
 
     .icon-btn:active{
@@ -141,21 +148,42 @@
       align-items:center;
       justify-content:center;
       padding:0 5px;
+      z-index:2;
     }
 
-    .cart-badge{ background:var(--danger); }
+    .cart-badge{
+      background:var(--danger);
+    }
+
     .notif-badge{
       background:#111827;
       display:none;
     }
 
+    #panelBackdrop{
+      position:fixed;
+      left:0;
+      right:0;
+      top:var(--bar-gap);
+      bottom:0;
+      display:none;
+      background:rgba(0,0,0,0.28);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      z-index:200;
+    }
+
+    #panelBackdrop.show{
+      display:block;
+    }
+
     .fixed-dropdown{
       display:none;
       position:fixed;
-      top:84px;
+      top:calc(var(--bar-gap) + 8px);
       left:10px;
       right:10px;
-      z-index:190;
+      z-index:260;
     }
 
     .fixed-dropdown.show{
@@ -171,22 +199,21 @@
       color:var(--panel-text);
       border-radius:22px;
       padding:16px;
-      box-shadow:0 10px 24px rgba(0,0,0,0.15);
+      box-shadow:0 10px 24px rgba(0,0,0,0.18);
       border:1px solid rgba(255,255,255,0.12);
     }
 
-    .modal-overlay{
+    .center-modal{
       position:fixed;
       inset:0;
-      background:rgba(0,0,0,0.45);
       display:none;
       align-items:center;
       justify-content:center;
       padding:18px;
-      z-index:120;
+      z-index:250;
     }
 
-    .modal-overlay.show{
+    .center-modal.show{
       display:flex;
       animation:fadeIn .18s ease;
     }
@@ -199,7 +226,7 @@
       color:var(--panel-text);
       border-radius:24px;
       padding:18px;
-      box-shadow:0 20px 50px rgba(0,0,0,0.3);
+      box-shadow:0 20px 50px rgba(0,0,0,0.32);
       border:1px solid rgba(255,255,255,0.12);
     }
 
@@ -217,6 +244,7 @@
 
     .panel-head h2{
       font-size:24px;
+      line-height:1.2;
     }
 
     .close-btn{
@@ -226,15 +254,10 @@
       border-radius:12px;
       cursor:pointer;
       font-size:20px;
-      background:rgba(255,255,255,0.18);
+      background:rgba(255,255,255,0.16);
       color:var(--panel-text);
       border:1px solid rgba(255,255,255,0.15);
       flex-shrink:0;
-    }
-
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(-6px);}
-      to{opacity:1;transform:translateY(0);}
     }
 
     .small-note,.cart-empty,.history-empty,.notif-empty{
@@ -257,6 +280,7 @@
       text-align:center;
       font-weight:700;
       display:block;
+      box-shadow:var(--shadow-neon);
     }
 
     .theme-list{
@@ -285,6 +309,7 @@
     .theme-btn.active{
       background:linear-gradient(to right,#8b5cf6,#22d3ee);
       color:#fff;
+      box-shadow:var(--shadow-neon);
     }
 
     .theme-icon{
@@ -366,7 +391,34 @@
       border-color:#334155;
     }
 
-    .submit-btn,.mini-btn,.danger-btn{
+    .password-wrap{
+      position:relative;
+    }
+
+    .password-wrap input{
+      padding-right:46px;
+    }
+
+    .password-toggle{
+      position:absolute;
+      top:50%;
+      right:8px;
+      transform:translateY(-50%);
+      width:34px;
+      height:34px;
+      border:none;
+      border-radius:10px;
+      background:transparent;
+      color:#64748b;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    body.dark-theme .password-toggle{
+      color:#cbd5e1;
+    }
+
+    .submit-btn,.mini-btn,.danger-btn,.neon-btn,.neon-icon-btn{
       border:none;
       border-radius:14px;
       padding:12px 16px;
@@ -375,11 +427,12 @@
       color:#fff;
     }
 
-    .submit-btn{
+    .submit-btn,.neon-btn{
       background:linear-gradient(to right,#00d9ff,#8b5cf6);
+      box-shadow:var(--shadow-neon);
     }
 
-    .submit-btn.full{
+    .submit-btn.full,.neon-btn.full{
       width:100%;
     }
 
@@ -389,6 +442,22 @@
 
     .danger-btn{
       background:#dc2626;
+    }
+
+    .neon-delete{
+      background:linear-gradient(to right,#ff4d6d,#ff7b00);
+      box-shadow:0 0 16px rgba(255,77,109,0.28),0 0 28px rgba(255,123,0,0.18);
+    }
+
+    .neon-icon-btn{
+      width:38px;
+      height:38px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:0;
+      background:linear-gradient(to right,#ff4d6d,#ff7b00);
+      box-shadow:0 0 16px rgba(255,77,109,0.28),0 0 28px rgba(255,123,0,0.18);
     }
 
     .logout-wrap{
@@ -437,7 +506,7 @@
       flex-shrink:0;
     }
 
-    .qty-btn,.remove-btn,.delete-notif-btn{
+    .qty-btn,.remove-btn{
       border:none;
       border-radius:10px;
       cursor:pointer;
@@ -458,17 +527,6 @@
       padding:8px 10px;
     }
 
-    .delete-notif-btn{
-      width:34px;
-      height:34px;
-      background:#ef4444;
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:15px;
-    }
-
     .qty-value{
       min-width:24px;
       text-align:center;
@@ -481,11 +539,17 @@
       margin-bottom:14px;
     }
 
-    .cart-actions,.notif-top-actions{
+    .cart-actions,.notif-top-actions,.confirm-actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       margin-bottom:18px;
+    }
+
+    .confirm-actions{
+      margin-top:16px;
+      justify-content:flex-end;
+      margin-bottom:0;
     }
 
     .status-pill{
@@ -562,10 +626,12 @@
 
     .provider-badge.google{
       background:linear-gradient(to right,#4285f4,#34a853);
+      box-shadow:0 0 14px rgba(66,133,244,0.22);
     }
 
     .provider-badge.email{
       background:linear-gradient(to right,#8b5cf6,#22d3ee);
+      box-shadow:var(--shadow-neon);
     }
 
     .provider-text{
@@ -663,14 +729,6 @@
       border-radius:22px;
       border:2px solid rgba(255,255,255,0.65);
       box-shadow:0 0 14px rgba(20,231,255,0.25);
-    }
-
-    .mini-text{
-      margin-top:26px;
-      text-align:center;
-      font-size:17px;
-      line-height:1.7;
-      color:var(--soft);
     }
 
     .contact-section{
@@ -844,7 +902,7 @@
         max-width:none;
       }
 
-      .modal-overlay{
+      .center-modal{
         padding:10px;
         align-items:flex-start;
         padding-top:90px;
@@ -878,7 +936,7 @@
 <body>
   <div class="topbar-wrap">
     <div class="topbar-shell">
-      <div class="topbar">
+      <div class="topbar" id="topbar">
         <div class="left-zone">
           <button class="icon-btn" id="menuBtn" type="button">
             <i class="fa-solid fa-bars"></i>
@@ -911,6 +969,8 @@
       </div>
     </div>
   </div>
+
+  <div id="panelBackdrop"></div>
 
   <div class="fixed-dropdown" id="menuPanel">
     <div class="fixed-dropdown-inner">
@@ -975,10 +1035,6 @@
         <a href="abonnement.html" class="main-btn">Abonnement</a>
       </div>
 
-      <p class="mini-text">
-        Paiement : Orange Money • Mvola
-      </p>
-
       <div class="contact-section">
         <div class="contact-title">Contactez-nous</div>
         <div class="social-links">
@@ -993,7 +1049,7 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="cartModal">
+  <div class="center-modal" id="cartModal">
     <div class="modal-card wide">
       <div class="panel-head">
         <h2>Votre panier</h2>
@@ -1068,7 +1124,7 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="accountModal">
+  <div class="center-modal" id="accountModal">
     <div class="modal-card">
       <div class="panel-head">
         <h2>Compte</h2>
@@ -1085,7 +1141,12 @@
 
             <div class="form-group">
               <label for="loginPassword">Mot de passe</label>
-              <input id="loginPassword" type="password" placeholder="Votre mot de passe" required />
+              <div class="password-wrap">
+                <input id="loginPassword" type="password" placeholder="Votre mot de passe" required />
+                <button class="password-toggle" type="button" data-target="loginPassword" aria-label="Afficher le mot de passe">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
             </div>
 
             <button class="submit-btn full" type="submit">Connexion</button>
@@ -1117,7 +1178,12 @@
 
             <div class="form-group">
               <label for="signupPassword">Mot de passe</label>
-              <input id="signupPassword" type="password" placeholder="Choisissez un mot de passe" required />
+              <div class="password-wrap">
+                <input id="signupPassword" type="password" placeholder="Choisissez un mot de passe" required />
+                <button class="password-toggle" type="button" data-target="signupPassword" aria-label="Afficher le mot de passe">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
             </div>
 
             <button class="submit-btn full" type="submit">Créer un compte</button>
@@ -1147,7 +1213,7 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="historyModal">
+  <div class="center-modal" id="historyModal">
     <div class="modal-card">
       <div class="panel-head">
         <h2>Historique</h2>
@@ -1158,19 +1224,33 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="notificationModal">
+  <div class="center-modal" id="notificationModal">
     <div class="modal-card">
       <div class="panel-head">
         <h2>Notifications</h2>
         <button class="close-btn" type="button" data-close-modal="notification">&times;</button>
       </div>
 
-      <div class="notif-top-actions">
-        <button class="danger-btn" id="clearAllNotifications" type="button">Supprimer tout</button>
+      <div class="notif-top-actions" id="notificationTopActions" style="display:none;">
+        <button class="neon-btn neon-delete" id="clearAllNotifications" type="button">Supprimer tout</button>
       </div>
 
       <div id="notificationEmpty" class="notif-empty">Aucune notification pour le moment.</div>
       <ul id="notificationList" class="notif-list" style="display:none;"></ul>
+    </div>
+  </div>
+
+  <div class="center-modal" id="logoutConfirmModal">
+    <div class="modal-card" style="max-width:420px;">
+      <div class="panel-head">
+        <h2>Déconnexion</h2>
+        <button class="close-btn" type="button" data-close-modal="logoutConfirm">&times;</button>
+      </div>
+      <p style="line-height:1.7;color:var(--panel-text);">Voulez-vous vraiment vous déconnecter ?</p>
+      <div class="confirm-actions">
+        <button class="mini-btn dark" id="cancelLogoutBtn" type="button">Annuler</button>
+        <button class="submit-btn" id="confirmLogoutBtn" type="button">Se déconnecter</button>
+      </div>
     </div>
   </div>
 
@@ -1215,48 +1295,80 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const PANELS = {
-      menu: document.getElementById("menuPanel"),
-      theme: document.getElementById("themePanel")
-    };
+    const menuPanel = document.getElementById("menuPanel");
+    const themePanel = document.getElementById("themePanel");
+    const panelBackdrop = document.getElementById("panelBackdrop");
+    const topbar = document.getElementById("topbar");
 
-    const MODALS = {
+    const centerModals = {
       cart: document.getElementById("cartModal"),
       account: document.getElementById("accountModal"),
       history: document.getElementById("historyModal"),
-      notification: document.getElementById("notificationModal")
+      notification: document.getElementById("notificationModal"),
+      logoutConfirm: document.getElementById("logoutConfirmModal")
+    };
+
+    const dropdownPanels = {
+      menu: menuPanel,
+      theme: themePanel
     };
 
     const toastWrap = document.getElementById("toastWrap");
     const notifBadge = document.getElementById("notifBadge");
     const notificationList = document.getElementById("notificationList");
     const notificationEmpty = document.getElementById("notificationEmpty");
+    const notificationTopActions = document.getElementById("notificationTopActions");
 
-    function closePanels() {
-      Object.values(PANELS).forEach(panel => panel.classList.remove("show"));
+    function updateBackdropTop() {
+      const rect = topbar.getBoundingClientRect();
+      const top = rect.bottom + 8;
+      document.documentElement.style.setProperty("--bar-gap", `${top}px`);
+      panelBackdrop.style.top = `${top}px`;
     }
 
-    function closeOnePanel(name){
-      PANELS[name].classList.remove("show");
+    function anyOpen() {
+      const dropdownOpen = Object.values(dropdownPanels).some(panel => panel.classList.contains("show"));
+      const modalOpen = Object.values(centerModals).some(modal => modal.classList.contains("show"));
+      return dropdownOpen || modalOpen;
     }
 
-    function openPanel(name){
-      const panel = PANELS[name];
-      const isOpen = panel.classList.contains("show");
-      closePanels();
-      if (!isOpen) panel.classList.add("show");
+    function updateBackdropVisibility() {
+      if (anyOpen()) panelBackdrop.classList.add("show");
+      else panelBackdrop.classList.remove("show");
     }
 
-    function closeModals(){
-      Object.values(MODALS).forEach(modal => modal.classList.remove("show"));
+    function closeDropdowns() {
+      Object.values(dropdownPanels).forEach(panel => panel.classList.remove("show"));
+    }
+
+    function closeCenterModals() {
+      Object.values(centerModals).forEach(modal => modal.classList.remove("show"));
       document.body.classList.remove("modal-open");
     }
 
-    function openModal(name){
-      closePanels();
-      closeModals();
-      MODALS[name].classList.add("show");
+    function closeAll() {
+      closeDropdowns();
+      closeCenterModals();
+      updateBackdropVisibility();
+    }
+
+    function openDropdown(name) {
+      updateBackdropTop();
+      closeCenterModals();
+      Object.entries(dropdownPanels).forEach(([key, panel]) => {
+        panel.classList.toggle("show", key === name && !panel.classList.contains("show"));
+      });
+      updateBackdropVisibility();
+    }
+
+    function openModal(name) {
+      updateBackdropTop();
+      closeDropdowns();
+      Object.entries(centerModals).forEach(([key, modal]) => {
+        modal.classList.toggle("show", key === name);
+      });
       document.body.classList.add("modal-open");
+      updateBackdropVisibility();
 
       if (name === "cart") renderCart();
       if (name === "history") renderHistory();
@@ -1267,14 +1379,22 @@
       }
     }
 
+    function closeModal(name) {
+      if (centerModals[name]) centerModals[name].classList.remove("show");
+      if (!Object.values(centerModals).some(modal => modal.classList.contains("show"))) {
+        document.body.classList.remove("modal-open");
+      }
+      updateBackdropVisibility();
+    }
+
     document.getElementById("menuBtn").addEventListener("click", (e) => {
       e.stopPropagation();
-      openPanel("menu");
+      openDropdown("menu");
     });
 
     document.getElementById("themeBtn").addEventListener("click", (e) => {
       e.stopPropagation();
-      openPanel("theme");
+      openDropdown("theme");
     });
 
     document.getElementById("cartBtn").addEventListener("click", (e) => {
@@ -1298,30 +1418,26 @@
     });
 
     document.querySelectorAll("[data-close-panel]").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        closeOnePanel(btn.dataset.closePanel);
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.closePanel;
+        if (dropdownPanels[key]) dropdownPanels[key].classList.remove("show");
+        updateBackdropVisibility();
       });
     });
 
     document.querySelectorAll("[data-close-modal]").forEach(btn => {
-      btn.addEventListener("click", () => closeModals());
-    });
-
-    Object.values(MODALS).forEach(modal => {
-      modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeModals();
+      btn.addEventListener("click", () => {
+        closeModal(btn.dataset.closeModal);
       });
     });
 
-    document.addEventListener("click", function (e) {
-      const clickedInsidePanel = e.target.closest(".fixed-dropdown-inner");
-      const clickedInsideModalCard = e.target.closest(".modal-card");
-      const clickedIcon = e.target.closest(".icon-btn");
-      if (!clickedInsidePanel && !clickedInsideModalCard && !clickedIcon) {
-        closePanels();
-      }
+    panelBackdrop.addEventListener("click", () => {
+      closeAll();
     });
+
+    window.addEventListener("resize", updateBackdropTop);
+    window.addEventListener("scroll", updateBackdropTop, { passive: true });
+    updateBackdropTop();
 
     function showToast(message) {
       const toast = document.createElement("div");
@@ -1342,7 +1458,7 @@
     function addNotification(message) {
       const list = getNotifications();
       list.unshift({
-        id: Date.now() + "_" + Math.random().toString(36).slice(2,8),
+        id: Date.now() + "_" + Math.random().toString(36).slice(2, 8),
         message,
         date: new Date().toLocaleString("fr-FR"),
         read: false
@@ -1377,11 +1493,13 @@
       if (list.length === 0) {
         notificationEmpty.style.display = "block";
         notificationList.style.display = "none";
+        notificationTopActions.style.display = "none";
         return;
       }
 
       notificationEmpty.style.display = "none";
       notificationList.style.display = "block";
+      notificationTopActions.style.display = "flex";
 
       list.forEach(item => {
         const li = document.createElement("li");
@@ -1393,7 +1511,7 @@
               <div style="margin-top:6px;color:var(--muted);font-size:13px;">${item.date}</div>
             </div>
             <div class="notif-actions">
-              <button class="delete-notif-btn" type="button" data-id="${item.id}" title="Supprimer">
+              <button class="neon-icon-btn" type="button" data-id="${item.id}" title="Supprimer">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </div>
@@ -1404,7 +1522,7 @@
     }
 
     notificationList.addEventListener("click", (e) => {
-      const btn = e.target.closest(".delete-notif-btn");
+      const btn = e.target.closest(".neon-icon-btn");
       if (!btn) return;
       deleteNotification(btn.dataset.id);
     });
@@ -1497,20 +1615,12 @@
       const index = Number(btn.dataset.index);
       const cart = getCart();
 
-      if (action === "plus") {
-        cart[index].qty += 1;
-      }
-
+      if (action === "plus") cart[index].qty += 1;
       if (action === "minus") {
         cart[index].qty -= 1;
-        if (cart[index].qty <= 0) {
-          cart.splice(index, 1);
-        }
+        if (cart[index].qty <= 0) cart.splice(index, 1);
       }
-
-      if (action === "remove") {
-        cart.splice(index, 1);
-      }
+      if (action === "remove") cart.splice(index, 1);
 
       saveCart(cart);
       renderCart();
@@ -1666,6 +1776,20 @@
       loginBox.classList.add("show");
     });
 
+    document.querySelectorAll(".password-toggle").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const input = document.getElementById(btn.dataset.target);
+        const icon = btn.querySelector("i");
+        if (input.type === "password") {
+          input.type = "text";
+          icon.className = "fa-regular fa-eye-slash";
+        } else {
+          input.type = "password";
+          icon.className = "fa-regular fa-eye";
+        }
+      });
+    });
+
     function firstLetter(text){
       return (text || "U").trim().charAt(0).toUpperCase();
     }
@@ -1705,15 +1829,6 @@
           <span class="provider-badge ${providerClass}">${providerBadge}</span>
           <div class="provider-text">${providerText}</div>
         `;
-
-        const logoutBtn = document.getElementById("logoutBtn");
-        logoutBtn.onclick = async () => {
-          const ok = confirm("Voulez-vous vraiment vous déconnecter ?");
-          if (!ok) return;
-          await signOut(auth);
-          addNotification("Déconnecté");
-          closeModals();
-        };
       } else {
         guestAccountView.style.display = "block";
         loggedAccountView.style.display = "none";
@@ -1721,6 +1836,20 @@
         signupBox.classList.remove("show");
       }
     }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      openModal("logoutConfirm");
+    });
+
+    document.getElementById("cancelLogoutBtn").addEventListener("click", () => {
+      closeModal("logoutConfirm");
+    });
+
+    document.getElementById("confirmLogoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      addNotification("Déconnecté");
+      closeAll();
+    });
 
     document.getElementById("payment_method").addEventListener("change", function () {
       const val = this.value;
@@ -1793,23 +1922,17 @@
     function setActiveThemeButton(mode) {
       themeButtons.forEach(btn => btn.classList.remove("active"));
 
-      if (mode === "light") {
-        document.getElementById("lightTheme").classList.add("active");
-      } else if (mode === "dark") {
-        document.getElementById("darkTheme").classList.add("active");
-      } else {
-        document.getElementById("autoTheme").classList.add("active");
-      }
+      if (mode === "light") document.getElementById("lightTheme").classList.add("active");
+      else if (mode === "dark") document.getElementById("darkTheme").classList.add("active");
+      else document.getElementById("autoTheme").classList.add("active");
     }
 
     function applyTheme(mode) {
       localStorage.setItem("ff_theme_mode", mode);
 
-      if (mode === "dark") {
-        document.body.classList.add("dark-theme");
-      } else if (mode === "light") {
-        document.body.classList.remove("dark-theme");
-      } else {
+      if (mode === "dark") document.body.classList.add("dark-theme");
+      else if (mode === "light") document.body.classList.remove("dark-theme");
+      else {
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         document.body.classList.toggle("dark-theme", prefersDark);
       }
@@ -1837,6 +1960,7 @@
     renderCart();
     renderNotifications();
     updateNotifBadge();
+    updateBackdropTop();
   </script>
 </body>
   </html>
