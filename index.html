@@ -68,13 +68,21 @@
       width:100%;
       max-width:980px;
       margin:0 auto;
+      padding-top:84px;
     }
 
     .topbar-wrap{
-      position:sticky;
+      position:fixed;
       top:10px;
-      z-index:60;
-      margin-bottom:16px;
+      left:10px;
+      right:10px;
+      z-index:200;
+    }
+
+    .topbar-shell{
+      width:100%;
+      max-width:980px;
+      margin:0 auto;
     }
 
     .topbar{
@@ -141,10 +149,24 @@
       display:none;
     }
 
-    .dropdown-panel{
+    .fixed-dropdown{
       display:none;
+      position:fixed;
+      top:84px;
+      left:10px;
+      right:10px;
+      z-index:190;
+    }
+
+    .fixed-dropdown.show{
+      display:block;
+      animation:fadeIn .18s ease;
+    }
+
+    .fixed-dropdown-inner{
       width:100%;
-      margin-top:10px;
+      max-width:980px;
+      margin:0 auto;
       background:var(--panel);
       color:var(--panel-text);
       border-radius:22px;
@@ -153,17 +175,10 @@
       border:1px solid rgba(255,255,255,0.12);
     }
 
-    .dropdown-panel.show{
-      display:block;
-      animation:fadeIn .18s ease;
-    }
-
     .modal-overlay{
       position:fixed;
       inset:0;
       background:rgba(0,0,0,0.45);
-      backdrop-filter:blur(4px);
-      -webkit-backdrop-filter:blur(4px);
       display:none;
       align-items:center;
       justify-content:center;
@@ -351,14 +366,17 @@
       border-color:#334155;
     }
 
-    .submit-btn,.mini-btn{
+    .submit-btn,.mini-btn,.danger-btn{
       border:none;
       border-radius:14px;
       padding:12px 16px;
       font-weight:700;
       cursor:pointer;
-      background:linear-gradient(to right,#00d9ff,#8b5cf6);
       color:#fff;
+    }
+
+    .submit-btn{
+      background:linear-gradient(to right,#00d9ff,#8b5cf6);
     }
 
     .submit-btn.full{
@@ -367,7 +385,10 @@
 
     .mini-btn.dark{
       background:#222;
-      color:#fff;
+    }
+
+    .danger-btn{
+      background:#dc2626;
     }
 
     .logout-wrap{
@@ -409,7 +430,14 @@
       flex-wrap:wrap;
     }
 
-    .qty-btn,.remove-btn{
+    .notif-actions{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-shrink:0;
+    }
+
+    .qty-btn,.remove-btn,.delete-notif-btn{
       border:none;
       border-radius:10px;
       cursor:pointer;
@@ -430,6 +458,17 @@
       padding:8px 10px;
     }
 
+    .delete-notif-btn{
+      width:34px;
+      height:34px;
+      background:#ef4444;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:15px;
+    }
+
     .qty-value{
       min-width:24px;
       text-align:center;
@@ -442,7 +481,7 @@
       margin-bottom:14px;
     }
 
-    .cart-actions{
+    .cart-actions,.notif-top-actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
@@ -724,6 +763,18 @@
 
       .topbar-wrap{
         top:8px;
+        left:8px;
+        right:8px;
+      }
+
+      .fixed-dropdown{
+        top:80px;
+        left:8px;
+        right:8px;
+      }
+
+      .container{
+        padding-top:80px;
       }
 
       .topbar{
@@ -796,12 +847,12 @@
       .modal-overlay{
         padding:10px;
         align-items:flex-start;
-        padding-top:80px;
+        padding-top:90px;
       }
 
       .modal-card{
         width:100%;
-        max-height:calc(100vh - 95px);
+        max-height:calc(100vh - 105px);
       }
     }
 
@@ -825,8 +876,8 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="topbar-wrap">
+  <div class="topbar-wrap">
+    <div class="topbar-shell">
       <div class="topbar">
         <div class="left-zone">
           <button class="icon-btn" id="menuBtn" type="button">
@@ -858,41 +909,47 @@
           </button>
         </div>
       </div>
+    </div>
+  </div>
 
-      <div class="dropdown-panel" id="menuPanel">
-        <div class="panel-head">
-          <h2>Menu</h2>
-          <button class="close-btn" type="button" data-close-panel="menu">&times;</button>
-        </div>
-        <div class="menu-grid">
-          <a class="menu-link" href="topup.html">Top Up</a>
-          <a class="menu-link" href="abonnement.html">Abonnement</a>
-        </div>
+  <div class="fixed-dropdown" id="menuPanel">
+    <div class="fixed-dropdown-inner">
+      <div class="panel-head">
+        <h2>Menu</h2>
+        <button class="close-btn" type="button" data-close-panel="menu">&times;</button>
       </div>
-
-      <div class="dropdown-panel" id="themePanel">
-        <div class="panel-head">
-          <h2>Thème</h2>
-          <button class="close-btn" type="button" data-close-panel="theme">&times;</button>
-        </div>
-        <p class="small-note">Choisissez l’apparence du site.</p>
-        <div class="theme-list">
-          <button class="theme-btn" id="lightTheme" type="button">
-            <span class="theme-icon"><i class="fa-solid fa-sun"></i></span>
-            <span class="theme-text">Clair</span>
-          </button>
-          <button class="theme-btn" id="darkTheme" type="button">
-            <span class="theme-icon"><i class="fa-solid fa-moon"></i></span>
-            <span class="theme-text">Sombre</span>
-          </button>
-          <button class="theme-btn" id="autoTheme" type="button">
-            <span class="theme-icon"><i class="fa-solid fa-circle-half-stroke"></i></span>
-            <span class="theme-text">Auto</span>
-          </button>
-        </div>
+      <div class="menu-grid">
+        <a class="menu-link" href="topup.html">Top Up</a>
+        <a class="menu-link" href="abonnement.html">Abonnement</a>
       </div>
     </div>
+  </div>
 
+  <div class="fixed-dropdown" id="themePanel">
+    <div class="fixed-dropdown-inner">
+      <div class="panel-head">
+        <h2>Thème</h2>
+        <button class="close-btn" type="button" data-close-panel="theme">&times;</button>
+      </div>
+      <p class="small-note">Choisissez l’apparence du site.</p>
+      <div class="theme-list">
+        <button class="theme-btn" id="lightTheme" type="button">
+          <span class="theme-icon"><i class="fa-solid fa-sun"></i></span>
+          <span class="theme-text">Clair</span>
+        </button>
+        <button class="theme-btn" id="darkTheme" type="button">
+          <span class="theme-icon"><i class="fa-solid fa-moon"></i></span>
+          <span class="theme-text">Sombre</span>
+        </button>
+        <button class="theme-btn" id="autoTheme" type="button">
+          <span class="theme-icon"><i class="fa-solid fa-circle-half-stroke"></i></span>
+          <span class="theme-text">Auto</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
     <div class="hero">
       <h1 class="hero-title">Bienvenue sur FF Secure Shop</h1>
 
@@ -1107,6 +1164,11 @@
         <h2>Notifications</h2>
         <button class="close-btn" type="button" data-close-modal="notification">&times;</button>
       </div>
+
+      <div class="notif-top-actions">
+        <button class="danger-btn" id="clearAllNotifications" type="button">Supprimer tout</button>
+      </div>
+
       <div id="notificationEmpty" class="notif-empty">Aucune notification pour le moment.</div>
       <ul id="notificationList" class="notif-list" style="display:none;"></ul>
     </div>
@@ -1253,7 +1315,7 @@
     });
 
     document.addEventListener("click", function (e) {
-      const clickedInsidePanel = e.target.closest(".dropdown-panel");
+      const clickedInsidePanel = e.target.closest(".fixed-dropdown-inner");
       const clickedInsideModalCard = e.target.closest(".modal-card");
       const clickedIcon = e.target.closest(".icon-btn");
       if (!clickedInsidePanel && !clickedInsideModalCard && !clickedIcon) {
@@ -1280,6 +1342,7 @@
     function addNotification(message) {
       const list = getNotifications();
       list.unshift({
+        id: Date.now() + "_" + Math.random().toString(36).slice(2,8),
         message,
         date: new Date().toLocaleString("fr-FR"),
         read: false
@@ -1289,6 +1352,23 @@
       renderNotifications();
       showToast(message);
     }
+
+    function deleteNotification(id) {
+      const list = getNotifications().filter(item => item.id !== id);
+      saveNotifications(list);
+      updateNotifBadge();
+      renderNotifications();
+    }
+
+    function clearAllNotifications() {
+      saveNotifications([]);
+      updateNotifBadge();
+      renderNotifications();
+    }
+
+    document.getElementById("clearAllNotifications").addEventListener("click", () => {
+      clearAllNotifications();
+    });
 
     function renderNotifications() {
       const list = getNotifications();
@@ -1308,13 +1388,26 @@
         li.className = "notif-item";
         li.innerHTML = `
           <div class="notif-item-top">
-            <span class="notif-item-name">${item.message}</span>
-            <span>${item.date}</span>
+            <div>
+              <div class="notif-item-name">${item.message}</div>
+              <div style="margin-top:6px;color:var(--muted);font-size:13px;">${item.date}</div>
+            </div>
+            <div class="notif-actions">
+              <button class="delete-notif-btn" type="button" data-id="${item.id}" title="Supprimer">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </div>
         `;
         notificationList.appendChild(li);
       });
     }
+
+    notificationList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".delete-notif-btn");
+      if (!btn) return;
+      deleteNotification(btn.dataset.id);
+    });
 
     function updateNotifBadge() {
       const unread = getNotifications().filter(item => !item.read).length;
