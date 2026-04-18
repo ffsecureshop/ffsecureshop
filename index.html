@@ -1819,13 +1819,14 @@ document.getElementById("finalCheckoutConfirm").addEventListener("click", () => 
     }
 
     function updateFloatingVisibility(totalQty = null) {
-  const qty = totalQty ?? getCart().reduce((sum, item) => sum + (item.qty || 1), 0);
+  const qty = totalQty ?? getCart().reduce((sum, item) => sum + (item.qty ?? 0), 0);
 
   if (qty > 0) {
     floatingCart.classList.add("show");
     floatingCartBadge.textContent = qty;
-  } else {
+} else {
     floatingCart.classList.remove("show");
+}
   }
 }
 
