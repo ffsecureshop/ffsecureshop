@@ -1660,7 +1660,6 @@ paymentOptions.forEach(option => {
 document.getElementById("cancelCheckoutConfirm").addEventListener("click", () => {
   closeModal("checkoutConfirm");
 });
-const centerModals = {
 document.getElementById("finalCheckoutConfirm").addEventListener("click", () => {
   if (!pendingCheckoutData) return;
   localStorage.setItem("ff_pending_order", JSON.stringify(pendingCheckoutData));
