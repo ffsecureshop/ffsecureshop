@@ -799,51 +799,55 @@
       margin:12px 0 10px;
     }
 
-    .floating-cart{
-      position:fixed;
-      right:18px;
-      bottom:90px;
-      width:74px;
-      height:74px;
-      border-radius:24px;
-      border:2px solid var(--floating-border);
-      background:var(--floating-bg);
-      color:#fff;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      font-size:29px;
-      cursor:pointer;
-      z-index:500;
-      box-shadow:0 12px 28px rgba(0,0,0,0.28);
-      touch-action:none;
-      user-select:none;
-      -webkit-user-select:none;
-      backdrop-filter:blur(8px);
-      -webkit-backdrop-filter:blur(8px);
-    }
+.floating-cart{
+  position:fixed;
+  right:14px;
+  bottom:84px;
+  width:60px;
+  height:60px;
+  border-radius:18px;
+  border:1.5px solid rgba(255,255,255,0.22);
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  cursor:pointer;
+  z-index:500;
+  box-shadow:0 8px 22px rgba(0,0,0,0.22);
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+}
 
-    .floating-cart.show{
-      display:flex;
-    }
+.floating-cart.show{
+  display:flex;
+}
 
-    .floating-cart-badge{
-      position:absolute;
-      top:-10px;
-      right:-10px;
-      min-width:34px;
-      height:34px;
-      border-radius:50%;
-      background:#ff2f6d;
-      color:#fff;
-      font-size:18px;
-      font-weight:700;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:0 8px;
-      box-shadow:0 0 18px rgba(255,47,109,0.35);
-    }
+.floating-cart i{
+  opacity:.95;
+}
+
+.floating-cart-badge{
+  position:absolute;
+  top:-7px;
+  right:-7px;
+  min-width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#ff2f6d;
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 6px;
+  box-shadow:0 0 12px rgba(255,47,109,0.28);
+}
 
     .toast-wrap{
       position:fixed;
@@ -990,20 +994,20 @@
         margin:0 0 22px;
       }
 
-      .floating-cart{
-        width:68px;
-        height:68px;
-        right:14px;
-        bottom:84px;
-        border-radius:22px;
-        font-size:26px;
-      }
+  .floating-cart{
+  width:56px;
+  height:56px;
+  right:12px;
+  bottom:82px;
+  border-radius:16px;
+  font-size:20px;
+}
 
-      .floating-cart-badge{
-        min-width:30px;
-        height:30px;
-        font-size:16px;
-      }
+.floating-cart-badge{
+  min-width:22px;
+  height:22px;
+  font-size:11px;
+}
     }
 
     @media (min-width:701px){
@@ -1159,44 +1163,63 @@
         </div>
       </div>
 
-      <div id="filledState" style="display:none;">
-        <ul class="cart-list" id="cartList"></ul>
-        <div class="cart-total" id="cartTotal">Total : 0 Ar</div>
+  <div id="filledState" style="display:none;">
+  <div class="cart-box">
+    <ul class="cart-list" id="cartList"></ul>
 
-        <div class="cart-actions">
-          <button class="mini-btn dark" id="clearCart" type="button">Vider le panier</button>
-        </div>
+    <div class="cart-total" id="cartTotal">
+      <span>Total</span>
+      <span>0 Ar</span>
+    </div>
 
-        <form id="orderForm">
-          <input type="hidden" id="clientAccountName" />
+    <div class="cart-actions">
+      <button class="mini-btn dark" id="clearCart" type="button">Vider le panier</button>
+    </div>
 
-          <div class="form-group">
-            <label for="uid">UID</label>
-            <input type="text" id="uid" placeholder="Votre UID" required />
-          </div>
+    <form id="orderForm" class="checkout-fields">
+      <input type="hidden" id="clientAccountName" />
+      <input type="hidden" id="selectedPaymentMethod" />
 
-          <div class="form-group">
-            <label for="pseudo">Pseudo</label>
-            <input type="text" id="pseudo" placeholder="Votre pseudo" required />
-          </div>
-
-          <div class="form-group">
-            <label for="transfer_number">Moyen de paiement</label>
-            <select id="transfer_number" required>
-              <option value="">Choisir...</option>
-              <option value="Orange Money - 0374003205">Orange Money - 0374003205</option>
-              <option value="Mvola - 0380621851">Mvola - 0380621851</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="telephone">Téléphone</label>
-            <input type="tel" id="telephone" placeholder="Votre numéro" required />
-          </div>
-
-          <button type="submit" class="submit-btn full">Confirmer la commande</button>
-        </form>
+      <div class="form-group">
+        <input type="text" id="uid" placeholder="Player ID *" required />
       </div>
+
+      <div class="form-group">
+        <input type="text" id="pseudo" placeholder="Pseudo" required />
+      </div>
+
+      <div class="form-group">
+        <input type="tel" id="telephone" placeholder="Votre Téléphone (03x...)" required />
+      </div>
+
+      <div class="payment-title">Mode de paiement</div>
+
+      <div class="payment-options">
+        <button class="payment-option" type="button" data-method="Mvola">
+          <div class="payment-option-left">
+            <div class="payment-logo mvola">M</div>
+            <div class="payment-name">MVOLA</div>
+          </div>
+          <div class="payment-check">
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </button>
+
+        <button class="payment-option" type="button" data-method="Orange Money">
+          <div class="payment-option-left">
+            <div class="payment-logo orange">OM</div>
+            <div class="payment-name">ORANGE</div>
+          </div>
+          <div class="payment-check">
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </button>
+      </div>
+
+      <button type="submit" class="checkout-btn">Confirmer la commande</button>
+    </form>
+  </div>
+</div>
     </div>
   </div>
 
