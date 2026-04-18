@@ -1544,35 +1544,39 @@ body.dark-theme .checkout-fields input{
       <h2>Confirmer</h2>
       <button class="close-btn" type="button" data-close-modal="checkoutConfirm">&times;</button>
     </div>
+<div class="confirm-sheet">
+  <div class="confirm-section-title">Récapitulatif</div>
 
-    <div class="confirm-info-card">
-      <div class="confirm-line">
-        <div class="confirm-label">ID Joueur</div>
-        <div class="confirm-value" id="confirmUid">-</div>
-      </div>
-      <div class="confirm-line">
-        <div class="confirm-label">Pseudo</div>
-        <div class="confirm-value" id="confirmPseudo">-</div>
-      </div>
-      <div class="confirm-line">
-        <div class="confirm-label">Téléphone</div>
-        <div class="confirm-value" id="confirmPhone">-</div>
-      </div>
-      <div class="confirm-line">
-        <div class="confirm-label">Paiement</div>
-        <div class="confirm-value" id="confirmMethod">-</div>
-      </div>
-    </div>
+  <div class="confirm-row-card">
+    <span class="confirm-row-label">UID</span>
+    <span class="confirm-row-value" id="confirmUid">-</span>
+  </div>
 
-    <div class="confirm-total-box">
-      <div class="confirm-total-label">Total à payer</div>
-      <div class="confirm-total-value" id="confirmTotal">0 <span>Ar</span></div>
-    </div>
+  <div class="confirm-row-card">
+    <span class="confirm-row-label">Pseudo</span>
+    <span class="confirm-row-value" id="confirmPseudo">-</span>
+  </div>
 
-    <div class="confirm-actions dual">
-      <button class="confirm-cancel-btn" id="cancelCheckoutConfirm" type="button">Annuler</button>
-      <button class="confirm-ok-btn" id="finalCheckoutConfirm" type="button">Confirmer</button>
-    </div>
+  <div class="confirm-row-card">
+    <span class="confirm-row-label">Téléphone</span>
+    <span class="confirm-row-value" id="confirmPhone">-</span>
+  </div>
+
+  <div class="confirm-row-card">
+    <span class="confirm-row-label">Paiement</span>
+    <span class="confirm-row-value" id="confirmMethod">-</span>
+  </div>
+
+  <div class="confirm-total-card">
+    <div class="confirm-total-top">Total à payer</div>
+    <div class="confirm-total-amount" id="confirmTotal">0 <span>Ar</span></div>
+  </div>
+
+  <div class="confirm-actions modern">
+    <button class="confirm-cancel-btn" id="cancelCheckoutConfirm" type="button">Annuler</button>
+    <button class="confirm-ok-btn" id="finalCheckoutConfirm" type="button">Confirmer</button>
+  </div>
+</div>>
   </div>
 </div>
   <button id="floatingCart" class="floating-cart" type="button" aria-label="Ouvrir le panier">
