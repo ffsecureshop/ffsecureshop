@@ -1820,14 +1820,15 @@ document.getElementById("finalCheckoutConfirm").addEventListener("click", () => 
 
     function updateFloatingVisibility(totalQty = null) {
   const qty = totalQty ?? getCart().reduce((sum, item) => sum + (item.qty ?? 0), 0);
+  const cartOpened = centerModals.cart.classList.contains("show");
 
-  if (qty > 0) {
+  if (qty > 0 && !cartOpened) {
     floatingCart.classList.add("show");
     floatingCartBadge.textContent = qty;
   } else {
     floatingCart.classList.remove("show");
   }
-}
+    }
 
     function closeDropdowns() {
       Object.values(dropdownPanels).forEach(panel => panel.classList.remove("show"));
