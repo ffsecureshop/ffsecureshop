@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FF Secure Shop - Accueil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:'Poppins',sans-serif;
+      min-height:100vh;
+      transition:.25s ease;
+      background: var(--bg-main);
+      color: var(--text);
+    }
+
+    :root{
+      --bg-main: radial-gradient(circle at top, #5ce1ff 0%, #35c6f0 22%, #7a89ff 58%, #9578ff 100%);
+      --page-overlay: rgba(255,255,255,.06);
+      --nav-bg: linear-gradient(90deg, rgba(181,94,255,.55), rgba(99,194,255,.45));
+      --nav-border: rgba(255,255,255,.22);
+      --glass: rgba(255,255,255,.14);
+      --glass-2: rgba(255,255,255,.09);
+      --card: linear-gradient(180deg, rgba(118,217,255,.18), rgba(133,118,255,.22));
+      --card-border: rgba(255,255,255,.16);
+      --text: #ffffff;
+      --subtext: rgba(255,255,255,.92);
+      --pill-bg: rgba(255,255,255,.10);
+      --btn: #37c8d8;
+      --btn-text: #08121d;
+      --btn-border: rgba(214,255,255,.7);
+      --shadow: 0 12px 30px rgba(32,76,194,.18);
+      --icon-ring: rgba(255,255,255,.18);
+      --contact-ring: rgba(255,255,255,.28);
+      --accent-pink: #ff3f90;
+      --accent-blue: #00bfff;
+    }
+
+    body.dark{
+      --bg-main: radial-gradient(circle at top, #021737 0%, #08162f 25%, #0b1126 55%, #050913 100%);
+      --page-overlay: rgba(23,33,58,.50);
+      --nav-bg: linear-gradient(90deg, rgba(66,76,101,.62), rgba(45,54,77,.58));
+      --nav-border: rgba(255,255,255,.14);
+      --glass: rgba(255,255,255,.07);
+      --glass-2: rgba(255,255,255,.05);
+      --card: linear-gradient(180deg, rgba(22,33,60,.94), rgba(18,30,57,.96));
+      --card-border: rgba(255,255,255,.10);
+      --text: #ffffff;
+      --subtext: rgba(255,255,255,.93);
+      --pill-bg: rgba(255,255,255,.08);
+      --btn: #39c8c3;
+      --btn-text: #06111b;
+      --btn-border: rgba(203,255,248,.65);
+      --shadow: 0 12px 32px rgba(0,0,0,.45);
+      --icon-ring: rgba(255,255,255,.12);
+      --contact-ring: rgba(255,255,255,.22);
+      --accent-pink: #ff3f90;
+      --accent-blue: #20a8ff;
+    }
+
+    .page{
+      width:min(100%, 460px);
+      margin:0 auto;
+      min-height:100vh;
+      padding:18px 14px 28px;
+      background: linear-gradient(180deg, transparent, var(--page-overlay));
+    }
+
+    .topbar{
+      position:relative;
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+      padding:12px;
+      background: var(--nav-bg);
+      border:1px solid var(--nav-border);
+      border-radius:30px;
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      margin-bottom:18px;
+    }
+
+    .nav-btn{
+      height:78px;
+      border:none;
+      border-radius:22px;
+      background: var(--glass);
+      color: var(--text);
+      font-size:1.55rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      border:1px solid var(--icon-ring);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+      transition:.18s ease;
+      position:relative;
+    }
+
+    .nav-btn:active,
+    .main-btn:active,
+    .contact-btn:active,
+    .modal-btn:active,
+    .cart-action:active{
+      transform:scale(.97);
+    }
+
+    .badge{
+      position:absolute;
+      top:-7px;
+      right:-7px;
+      min-width:34px;
+      height:34px;
+      padding:0 8px;
+      border-radius:999px;
+      background: var(--accent-pink);
+      color:#fff;
+      font-weight:800;
+      font-size:1.05rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow: 0 8px 18px rgba(255,63,144,.35);
+      border: 2px solid rgba(255,255,255,.16);
+    }
+
+    .panel{
+      display:none;
+      margin:-3px 4px 16px;
+      padding:14px;
+      border-radius:22px;
+      background: var(--glass-2);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .panel.active{display:block}
+    .panel h3{margin:0 0 10px;font-size:1rem}
+    .panel p,.panel a{margin:0;color:var(--subtext);text-decoration:none;font-size:.95rem;line-height:1.5}
+
+    .hero{
+      padding:26px 18px 26px;
+      border-radius:36px;
+      background: var(--card);
+      border:1px solid var(--card-border);
+      box-shadow: var(--shadow), inset 0 0 0 1px rgba(255,255,255,.04);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      text-align:center;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero::before,
+    .hero::after{
+      content:"";
+      position:absolute;
+      width:220px;
+      height:220px;
+      border-radius:50%;
+      filter:blur(50px);
+      opacity:.18;
+      pointer-events:none;
+    }
+    .hero::before{background:#45f4ff;top:-80px;left:-70px}
+    .hero::after{background:#6a6dff;right:-90px;bottom:-90px}
+
+    h1{
+      position:relative;
+      z-index:1;
+      font-size:2.1rem;
+      line-height:1.1;
+      margin:6px 0 16px;
+      font-weight:800;
+      letter-spacing:.2px;
+    }
+
+    .news-pill{
+      position:relative;
+      z-index:1;
+      width:100%;
+      overflow:hidden;
+      border-radius:999px;
+      background: var(--pill-bg);
+      border:1px solid rgba(255,255,255,.14);
+      padding:14px 0;
+      margin:0 0 24px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+
+    .ticker{
+      display:inline-block;
+      white-space:nowrap;
+      padding-left:100%;
+      animation: ticker 15s linear infinite;
+      font-size:1rem;
+      font-weight:700;
+      color:var(--subtext);
+    }
+
+    @keyframes ticker{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(-100%)}
+    }
+
+    .desc{
+      position:relative;
+      z-index:1;
+      font-size:1.1rem;
+      line-height:1.8;
+      color:var(--subtext);
+      margin:0 auto 20px;
+      max-width:330px;
+    }
+
+    .features{
+      position:relative;
+      z-index:1;
+      list-style:none;
+      padding:0;
+      margin:0 0 24px;
+      display:grid;
+      gap:10px;
+      font-size:1.05rem;
+      color:var(--subtext);
+    }
+
+    .main-btns{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:16px;
+      margin-bottom:28px;
+    }
+
+    .main-btn{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:102px;
+      border-radius:999px;
+      border: 2px solid var(--btn-border);
+      background: var(--btn);
+      color: var(--btn-text);
+      text-decoration:none;
+      font-size:1.1rem;
+      font-weight:800;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.08) inset, 0 0 22px rgba(88,255,246,.18);
+      letter-spacing:.2px;
+    }
+
+    .contact-title{
+      position:relative;
+      z-index:1;
+      margin:0 0 16px;
+      font-size:1.2rem;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .contacts{
+      position:relative;
+      z-index:1;
+      display:flex;
+      justify-content:center;
+      gap:18px;
+    }
+
+    .contact-btn{
+      width:84px;
+      height:84px;
+      border-radius:50%;
+      background: rgba(255,255,255,.04);
+      border:2px solid var(--contact-ring);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2.2rem;
+      text-decoration:none;
+      box-shadow: 0 0 18px rgba(0,0,0,.10);
+    }
+
+    .contact-btn.facebook{color:#1877f2}
+    .contact-btn.messenger{color:#00a5ff}
+
+    .cart-float{
+      position:fixed;
+      right:16px;
+      bottom:16px;
+      width:min(290px, calc(100vw - 24px));
+      padding:14px;
+      border-radius:22px;
+      background: rgba(15,22,40,.74);
+      border:1px solid rgba(255,255,255,.11);
+      box-shadow: 0 16px 38px rgba(0,0,0,.30);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color:#fff;
+      display:none;
+      z-index:50;
+    }
+
+    .cart-float.show{display:block}
+    .cart-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}
+    .cart-title h3{margin:0;font-size:1rem}
+    .cart-close{
+      background:transparent;border:none;color:#fff;font-size:1.05rem;cursor:pointer;
+    }
+    .cart-list{display:grid;gap:8px;margin-bottom:12px;font-size:.92rem}
+    .cart-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 10px;
+      background: rgba(255,255,255,.06);
+      border-radius:12px;
+    }
+    .cart-total{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:800;
+      margin-bottom:12px;
+    }
+    .cart-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .cart-action{
+      border:none;
+      border-radius:14px;
+      min-height:42px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .cart-action.clear{background:#2b344d;color:#fff}
+    .cart-action.pay{background:var(--btn);color:var(--btn-text)}
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.45);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:80;
+    }
+    .overlay.show{display:flex}
+
+    .modal{
+      width:min(100%, 370px);
+      background: linear-gradient(180deg, rgba(18,31,58,.96), rgba(13,23,43,.97));
+      color:#fff;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:24px;
+      padding:18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.38);
+    }
+
+    .modal h3{margin:0 0 12px;font-size:1.15rem}
+    .modal p{margin:0 0 12px;color:rgba(255,255,255,.88);font-size:.95rem;line-height:1.5}
+    .modal input{
+      width:100%;
+      min-height:48px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      padding:0 14px;
+      margin-bottom:10px;
+      outline:none;
+      font-family:inherit;
+      font-size:.96rem;
+    }
+    .payment-choices{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin:10px 0 14px;
+    }
+    .choice{
+      min-height:48px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .choice.active{
+      background: var(--btn);
+      color: var(--btn-text);
+      border-color: var(--btn-border);
+    }
+    .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .modal-btn{
+      min-height:46px;
+      border:none;
+      border-radius:14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .modal-btn.cancel{background:#2b344d;color:#fff}
+    .modal-btn.confirm{background:var(--btn);color:var(--btn-text)}
+
+    @media (max-width:420px){
+      .page{padding:14px 10px 22px}
+      .topbar{gap:8px;padding:10px}
+      .nav-btn{height:70px;font-size:1.35rem;border-radius:20px}
+      h1{font-size:1.75rem}
+      .main-btn{min-height:96px;font-size:1.02rem}
+      .contact-btn{width:78px;height:78px;font-size:2rem}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <button class="nav-btn" data-panel="menuPanel" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+      <button class="nav-btn" data-panel="historyPanel" aria-label="Historique"><i class="fa-regular fa-clock"></i></button>
+      <button class="nav-btn" data-panel="accountPanel" aria-label="Compte"><i class="fa-regular fa-user"></i></button>
+      <button class="nav-btn" id="themeToggle" aria-label="Mode sombre"><i class="fa-solid fa-circle-half-stroke"></i></button>
+      <button class="nav-btn" data-panel="notifPanel" aria-label="Notifications"><i class="fa-regular fa-bell"></i></button>
+      <button class="nav-btn" id="cartToggle" aria-label="Panier">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span class="badge" id="cartBadge">0</span>
+      </button>
+    </div>
+
+    <div class="panel" id="menuPanel">
+      <h3>Menu</h3>
+      <p><a href="accueil.html">Accueil</a><br><a href="topup.html">Top Up</a><br><a href="abonnement.html">Abonnement</a></p>
+    </div>
+
+    <div class="panel" id="historyPanel">
+      <h3>Historique</h3>
+      <p>Aucune commande récente pour le moment.</p>
+    </div>
+
+    <div class="panel" id="accountPanel">
+      <h3>Compte</h3>
+      <p>Connectez-vous plus tard pour voir votre profil et vos commandes.</p>
+    </div>
+
+    <div class="panel" id="notifPanel">
+      <h3>Notifications</h3>
+      <p>🔔 Livraison rapide • 💎 Top Up instantané • 🔥 Abonnements disponibles</p>
+    </div>
+
+    <section class="hero">
+      <h1>Bienvenue sur FF Secure Shop</h1>
+
+      <div class="news-pill">
+        <div class="ticker">💎 Top Up instantané • ⚡ Livraison rapide pendant les heures d’ouverture • 🔥 Abonnements disponibles • 💎 Top Up instantané • ⚡ Livraison rapide pendant les heures d’ouverture • 🔥 Abonnements disponibles •</div>
+      </div>
+
+      <p class="desc">
+        Rechargez vos diamants rapidement et en toute sécurité.
+      </p>
+
+      <ul class="features">
+        <li>⚡ Livraison rapide</li>
+        <li>💎 Top Up instantané</li>
+        <li>🔥 Abonnements disponibles</li>
+      </ul>
+
+      <div class="main-btns">
+        <a href="topup.html" class="main-btn">Top Up</a>
+        <a href="abonnement.html" class="main-btn">Abonnement</a>
+      </div>
+
+      <h2 class="contact-title">Contactez-nous</h2>
+      <div class="contacts">
+        <a href="#" class="contact-btn facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#" class="contact-btn messenger" aria-label="Messenger"><i class="fa-brands fa-facebook-messenger"></i></a>
+      </div>
+    </section>
+  </div>
+
+  <div class="cart-float" id="cartFloat">
+    <div class="cart-title">
+      <h3>Votre panier</h3>
+      <button class="cart-close" id="cartClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-list" id="cartList">
+      <div class="cart-row"><span>Aucun pack</span><span>0 Ar</span></div>
+    </div>
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">0 Ar</span>
+    </div>
+    <div class="cart-buttons">
+      <button class="cart-action clear" id="clearCart">Vider</button>
+      <button class="cart-action pay" id="payCart">Payer</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="orderModal">
+    <div class="modal">
+      <h3>Confirmer la commande</h3>
+      <p>Remplis tes infos. Le panier reste compatible avec MVOLA et Orange Money.</p>
+
+      <input type="text" id="playerId" placeholder="Player ID" />
+      <input type="text" id="pseudo" placeholder="Pseudo" />
+      <input type="tel" id="telephone" placeholder="Téléphone" />
+
+      <div class="payment-choices">
+        <button class="choice active" type="button" data-pay="MVOLA">MVOLA</button>
+        <button class="choice" type="button" data-pay="Orange Money">Orange Money</button>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn cancel" type="button" id="cancelOrder">Annuler</button>
+        <button class="modal-btn confirm" type="button" id="confirmOrder">Confirmer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    const panels = document.querySelectorAll('.panel');
+    const panelButtons = document.querySelectorAll('[data-panel]');
+    const cartBadge = document.getElementById('cartBadge');
+    const cartFloat = document.getElementById('cartFloat');
+    const cartList = document.getElementById('cartList');
+    const cartTotal = document.getElementById('cartTotal');
+    const cartToggle = document.getElementById('cartToggle');
+    const cartClose = document.getElementById('cartClose');
+    const clearCart = document.getElementById('clearCart');
+    const payCart = document.getElementById('payCart');
+    const orderModal = document.getElementById('orderModal');
+    const cancelOrder = document.getElementById('cancelOrder');
+    const confirmOrder = document.getElementById('confirmOrder');
+    const paymentChoices = document.querySelectorAll('.choice');
+
+    let selectedPayment = 'MVOLA';
+    let cart = [];
+
+    try {
+      const savedTheme = localStorage.getItem('ffss-theme');
+      if(savedTheme === 'dark') body.classList.add('dark');
+      const savedCart = localStorage.getItem('ffss-cart');
+      if(savedCart){
+        const parsed = JSON.parse(savedCart);
+        if(Array.isArray(parsed)) cart = parsed;
+      }
+    } catch(e){}
+
+    function saveCart(){
+      try { localStorage.setItem('ffss-cart', JSON.stringify(cart)); } catch(e){}
+    }
+
+    function closePanels(){
+      panels.forEach(panel => panel.classList.remove('active'));
+    }
+
+    panelButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-panel');
+        const panel = document.getElementById(targetId);
+        const isOpen = panel.classList.contains('active');
+        closePanels();
+        if(!isOpen) panel.classList.add('active');
+      });
+    });
+
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      try {
+        localStorage.setItem('ffss-theme', body.classList.contains('dark') ? 'dark' : 'light');
+      } catch(e){}
+    });
+
+    function updateCartUI(){
+      const totalItems = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+      const totalPrice = cart.reduce((sum, item) => sum + ((item.price || 0) * (item.qty || 0)), 0);
+
+      cartBadge.textContent = totalItems;
+
+      if(totalItems <= 0){
+        cartFloat.classList.remove('show');
+        cartList.innerHTML = '<div class="cart-row"><span>Aucun pack</span><span>0 Ar</span></div>';
+        cartTotal.textContent = '0 Ar';
+        saveCart();
+        return;
+      }
+
+      cartList.innerHTML = cart.map(item => `
+        <div class="cart-row">
+          <span>${item.name} x${item.qty}</span>
+          <span>${(item.price * item.qty).toLocaleString('fr-FR')} Ar</span>
+        </div>
+      `).join('');
+
+      cartTotal.textContent = totalPrice.toLocaleString('fr-FR') + ' Ar';
+      saveCart();
+    }
+
+    cartToggle.addEventListener('click', () => {
+      const totalItems = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+      if(totalItems > 0){
+        cartFloat.classList.toggle('show');
+      }
+    });
+
+    cartClose.addEventListener('click', () => {
+      cartFloat.classList.remove('show');
+    });
+
+    clearCart.addEventListener('click', () => {
+      cart = [];
+      updateCartUI();
+    });
+
+    payCart.addEventListener('click', () => {
+      const totalItems = cart.reduce((sum, item) => sum + (item.qty || 0), 0);
+      if(totalItems > 0){
+        orderModal.classList.add('show');
+      }
+    });
+
+    cancelOrder.addEventListener('click', () => {
+      orderModal.classList.remove('show');
+    });
+
+    orderModal.addEventListener('click', (e) => {
+      if(e.target === orderModal){
+        orderModal.classList.remove('show');
+      }
+    });
+
+    paymentChoices.forEach(btn => {
+      btn.addEventListener('click', () => {
+        paymentChoices.forEach(choice => choice.classList.remove('active'));
+        btn.classList.add('active');
+        selectedPayment = btn.dataset.pay;
+      });
+    });
+
+    confirmOrder.addEventListener('click', () => {
+      const playerId = document.getElementById('playerId').value.trim();
+      const pseudo = document.getElementById('pseudo').value.trim();
+      const telephone = document.getElementById('telephone').value.trim();
+
+      if(!playerId || !pseudo || !telephone){
+        alert('Remplis Player ID, Pseudo et Téléphone.');
+        return;
+      }
+
+      alert('Commande confirmée avec ' + selectedPayment + ' !');
+      cart = [];
+      updateCartUI();
+      orderModal.classList.remove('show');
+      document.getElementById('playerId').value = '';
+      document.getElementById('pseudo').value = '';
+      document.getElementById('telephone').value = '';
+    });
+
+    updateCartUI();
+  </script>
+</body>
+</html>
