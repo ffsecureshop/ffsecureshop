@@ -1691,19 +1691,25 @@
 
         const li = document.createElement("li");
         li.className = "cart-item";
-        li.innerHTML = `
-          <div class="cart-item-top">
-            <span class="cart-item-name">${item.name}</span>
-            <button class="remove-btn" type="button" data-action="remove" data-index="${index}">X</button>
-          </div>
-          <div class="cart-controls">
-            <button class="qty-btn" type="button" data-action="minus" data-index="${index}">-</button>
-            <span class="qty-value">${qty}</span>
-            <button class="qty-btn" type="button" data-action="plus" data-index="${index}">+</button>
-            <span>${formatAr(subtotal)}</span>
-          </div>
-        `;
-        cartList.appendChild(li);
+      li.innerHTML = `
+  <div class="cart-item-card">
+    <div class="cart-item-top">
+      <div>
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${formatAr(Number(item.price))}</div>
+      </div>
+      <div class="cart-controls">
+        <button class="qty-btn" type="button" data-action="minus" data-index="${index}">−</button>
+        <span class="qty-value">${qty}</span>
+        <button class="qty-btn" type="button" data-action="plus" data-index="${index}">+</button>
+        <button class="remove-btn" type="button" data-action="remove" data-index="${index}">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+`;
+cartList.appendChild(li);
       });
 
       cartTotal.textContent = "Total : " + formatAr(total);
