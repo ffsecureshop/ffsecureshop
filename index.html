@@ -2224,20 +2224,6 @@ cartList.appendChild(li);
       closeAll();
     });
 
-    document.getElementById("orderForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const cart = getCart();
-
-      if (cart.length === 0) {
-        alert("Votre panier est vide.");
-        return;
-      }
-
-      const uid = document.getElementById("uid").value.trim();
-      const pseudo = document.getElementById("pseudo").value.trim();
-      const phone = document.getElementById("telephone").value.trim();
-      const paymentChoice = document.getElementById("transfer_number").value;
 document.getElementById("orderForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
