@@ -1653,10 +1653,16 @@
       min-height:220px;
       display:flex;
       flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .page-head-content{
+      display:flex;
+      flex-direction:column;
       justify-content:flex-end;
     }
 
-    .page-badge{
+.page-badge{
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -2006,8 +2012,10 @@
     <section class="topup-page">
       <div class="page-head-card">
         <div class="page-badge">Recharge officielle</div>
-        <h1 class="page-title">Top Up</h1>
-        <p class="page-subtitle">Choisissez votre pack et ajoutez-le au panier.</p>
+        <div class="page-head-content">
+          <h1 class="page-title">Top Up</h1>
+          <p class="page-subtitle">Choisissez votre pack et ajoutez-le au panier.</p>
+        </div>
       </div>
 
       <section class="packs-section">
